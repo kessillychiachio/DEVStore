@@ -1,43 +1,65 @@
 import styled from "styled-components";
+import { Title } from "./Title";
 
 const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
   max-width: 400px;
-  margin: 20px auto;
+  margin: 40px auto;
+  background: rgba(255, 255, 255, 0.1);
   padding: 20px;
-  background: white;
-  border-radius: 5px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  text-align: center;
 `;
 
 const Input = styled.input`
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-`;
+  padding: 12px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  outline: none;
+  font-size: 16px;
+  transition: 0.3s;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
 
-const Button = styled.button`
-  background: #007bff;
-  color: white;
-  padding: 10px;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;
-
-  &:hover {
-    background: #0056b3;
+  &:focus {
+    border-color: #00d4ff;
+    box-shadow: 0px 0px 10px rgba(0, 212, 255, 0.8);
+    background: rgba(255, 255, 255, 0.2);
   }
 `;
 
-function Formulario({ titulo, campos, onSubmit }) {
+const Button = styled.button`
+  background: linear-gradient(90deg, #007bff, #00d4ff);
+  color: white;
+  padding: 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: 0.3s;
+  letter-spacing: 1px;
+
+  &:hover {
+    transform: scale(1.05);
+    background: linear-gradient(90deg, #0056b3, #0097e6);
+    box-shadow: 0px 0px 15px rgba(0, 212, 255, 0.8);
+  }
+`;
+
+function Formulario({ titulo, campos = [], onSubmit }) { // 👈 Aqui garantimos que `campos` sempre será um array
   return (
     <FormContainer onSubmit={onSubmit}>
-      <h2>{titulo}</h2>
+      <Title text={titulo} size="24px" color="#fff" uppercase />
+
       {campos.map((campo, index) => (
         <Input key={index} type="text" placeholder={campo} required />
       ))}
+
       <Button type="submit">Enviar</Button>
     </FormContainer>
   );

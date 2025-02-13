@@ -1,28 +1,44 @@
 import styled from "styled-components";
 import LogoImg from "../Assets/logo.svg";
+import { Link } from "react-router-dom";
 
-const LogoContainer = styled.div`
+const LogoContainer = styled(Link)`  
   display: flex;
   align-items: center;
   gap: 10px;
+  text-decoration: none;
 
   img {
-    width: 50px;
+    width: 40px;
   }
+`;
 
-  p {
-    font-size: 20px;
-    font-weight: bold;
-    color: black;
-    text-decoration: none;
-  }
+const LogoText = styled.p`
+  font-size: 20px;
+  font-weight: bold;
+  color: black;
+  text-decoration: none;
+`;
+
+const DevText = styled.span`
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 24px;
+  font-weight: bold;
+  color: black; 
+`;
+
+const StoreText = styled.span`
+  font-size: 18px; 
+  font-weight: normal;
 `;
 
 function Logo() {
   return (
-    <LogoContainer>
-      <img src={LogoImg} alt="logo" />
-      <p><strong>DEV</strong>Store</p>
+    <LogoContainer to="/">
+      <img src={LogoImg} alt="Logo da DEV Store" />
+      <LogoText>
+        <DevText>DEV</DevText><StoreText>store</StoreText>
+      </LogoText>
     </LogoContainer>
   );
 }
