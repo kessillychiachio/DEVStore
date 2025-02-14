@@ -9,7 +9,7 @@ const FormContainer = styled.form`
   margin: 40px auto;
   background: ${(props) => props.theme.background};
   padding: 25px;
-  border-radius: 0 0 0 12px;
+  border-radius: 20px;
   box-shadow: 0px 4px 8px ${(props) => props.theme.text};
   backdrop-filter: blur(10px);
   text-align: center;
@@ -19,7 +19,7 @@ const FormContainer = styled.form`
 const Input = styled.input`
   padding: 14px;
   border: 1px solid ${(props) => props.theme.border};
-  border-radius: 8px;
+  border-radius: 20px;
   outline: none;
   font-size: 14px;
   transition: 0.3s;
@@ -28,30 +28,25 @@ const Input = styled.input`
   text-align: center;
 
   &:focus {
-    border-color: ${(props) => props.theme.primary};
-    box-shadow: 0px 0px 10px ${(props) => props.theme.primary};
-    background: ${(props) => props.theme.secondary};
+    border-color: ${(props) => props.theme.secondary};
+    box-shadow: 0px 0px 10px ${(props) => props.theme.secondary};
   }
 `;
 
 const Button = styled.button`
-  background: ${(props) => props.theme.primary};
   color: ${(props) => props.theme.text};
   padding: 14px;
   border: none;
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 20px;
   font-size: 16px;
   font-weight: bold;
   transition: 0.3s;
   letter-spacing: 1px;
   text-transform: uppercase;
-  box-shadow: 0px 4px 10px ${(props) => props.theme.primary};
 
   &:hover {
     transform: scale(1.05);
-    background: ${(props) => props.theme.secondary};
-    box-shadow: 0px 0px 12px ${(props) => props.theme.secondary};
   }
 `;
 

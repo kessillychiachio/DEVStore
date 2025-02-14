@@ -6,7 +6,6 @@ const CardContainer = styled.div`
   flex-direction: column;
   align-items: center;
   background: ${(props) => props.theme.background};
-  border: 1px solid ${(props) => props.theme.border};
   border-radius: 10px;
   padding: 20px;
   max-width: 600px;
@@ -17,7 +16,7 @@ const CardContainer = styled.div`
 `;
 
 const Title = styled.h3`
-  font-size: 18px;
+  font-size: 30px;
   font-weight: bold;
   color: ${(props) => props.theme.text};
   margin-bottom: 10px;
@@ -28,7 +27,7 @@ function RecommendationCard({ book }) {
 
   return (
     <CardContainer>
-      <Title>Recomendação do Dia</Title>
+      <Title>Que tal?</Title>
       <BookCard book={book} onClick={() => console.log("Livro recomendado:", book.nome)} />
     </CardContainer>
   );

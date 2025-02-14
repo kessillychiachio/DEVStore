@@ -7,15 +7,14 @@ const Card = styled.div`
   justify-content: space-between;
   align-items: center;
   background: ${(props) => props.theme.secondary};
-  border-radius: 10px;
+  border-radius: 20px;
   padding: 15px;
   text-align: center;
   width: 220px;
-  height: 100%;
+  height: 460px;
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   backdrop-filter: blur(12px);
   cursor: pointer;
-  border: 1px solid ${(props) => props.theme.border};
 
   &:hover {
     transform: scale(1.05);
@@ -40,13 +39,14 @@ const BookInfo = styled.div`
 
 const BookTitle = styled.h3`
   color: ${(props) => props.theme.text};
+  font-weight: 900;
   font-size: 16px;
   font-weight: bold;
   margin-top: 10px;
 `;
 
 const BookDescription = styled.p`
-  color: ${(props) => props.theme.textSecondary};
+  color: black;
   font-size: 14px;
   margin-top: 5px;
 `;

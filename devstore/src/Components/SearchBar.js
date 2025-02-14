@@ -33,7 +33,7 @@ const SearchInput = styled.input`
   width: 100%;
   padding: 12px;
   border: 2px solid ${(props) => props.theme.border};
-  border-radius: 5px;
+  border-radius:20px;
   outline: none;
   font-size: 16px;
   background: ${(props) => props.theme.background};
@@ -45,8 +45,8 @@ const SearchInput = styled.input`
   }
 
   &:focus {
-    border-color: ${(props) => props.theme.primary};
-    box-shadow: 0px 0px 8px ${(props) => props.theme.primary};
+    border-color: ${(props) => props.theme.secondary};
+    box-shadow: 0px 0px 4px ${(props) => props.theme.primary};
   }
 `;
 

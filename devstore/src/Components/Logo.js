@@ -9,27 +9,31 @@ const LogoContainer = styled(Link)`
   text-decoration: none;
 
   img {
-    width: 40px;
+    width: 30px;
   }
 `;
 
 const LogoText = styled.p`
   font-size: 20px;
   font-weight: bold;
-  color: black;
+  color: ${(props) => props.theme.text};
   text-decoration: none;
+  display: flex;
+  align-items: center;
 `;
 
 const DevText = styled.span`
   font-family: Georgia, 'Times New Roman', Times, serif;
   font-size: 24px;
   font-weight: bold;
-  color: black; 
+  color: ${(props) => props.theme.primary};
+  margin-bottom: 3px;
 `;
 
 const StoreText = styled.span`
-  font-size: 18px; 
+  font-size: 18px;
   font-weight: normal;
+  color: ${(props) => props.theme.textSecondary};  
 `;
 
 function Logo() {
@@ -37,7 +41,7 @@ function Logo() {
     <LogoContainer to="/">
       <img src={LogoImg} alt="Logo da DEV Store" />
       <LogoText>
-        <DevText>DEV</DevText><StoreText>store</StoreText>
+        <DevText>DEV</DevText><StoreText>bookspace</StoreText>
       </LogoText>
     </LogoContainer>
   );
