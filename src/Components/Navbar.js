@@ -39,8 +39,7 @@ const NavLinks = styled.div`
     border: 0.5px solid transparent;
 
     &:hover {
-      border-color: ${(props) => props.theme.primary};
-      box-shadow: 0px 0px 10px ${(props) => props.theme.primary};
+      text-decoration: underline orange;
       transform: scale(0.9);
     }
   }
