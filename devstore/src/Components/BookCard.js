@@ -6,7 +6,7 @@ const Card = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  background: ${(props) => props.theme.secondary};
+  background: ${(props) => props.theme.primary};
   border-radius: 20px;
   padding: 15px;
   text-align: center;
@@ -18,7 +18,6 @@ const Card = styled.div`
 
   &:hover {
     transform: scale(1.05);
-    box-shadow: 0px 0px 12px ${(props) => props.theme.primary};
     background: ${(props) => props.theme.secondary};
   }
 `;

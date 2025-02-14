@@ -12,12 +12,10 @@ const Button = styled.button`
   font-weight: bold;
   transition: 0.4s;
   text-transform: uppercase;
-  box-shadow: 0px 0px 12px ${(props) => props.theme.secondary};
 
   &:hover {
     transform: scale(1.08);
     background: ${(props) => props.theme.secondary};
-    box-shadow: 0px 0px 20px ${(props) => props.theme.primary};
   }
 `;
 
