@@ -11,7 +11,6 @@ const SearchContainer = styled.div`
   max-width: 600px;
   padding: 20px;
   background: ${(props) => props.theme.background};
-  border: 1px solid ${(props) => props.theme.border};
   border-radius: 10px;
   backdrop-filter: blur(8px);
   transition: background 0.3s ease-in-out, border 0.3s ease-in-out;

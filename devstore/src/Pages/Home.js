@@ -1,6 +1,7 @@
 import { useState } from "react";
 import SearchBar from "../Components/SearchBar";
 import BookCard from "../Components/BookCard";
+import LatestReleases from "../Components/LatestReleases";
 
 function Home() {
   const [selectedBook, setSelectedBook] = useState(null);
@@ -17,6 +18,7 @@ function Home() {
           }}
         />
       )}
+      <LatestReleases onBookSelect={setSelectedBook} />
     </div>
   );
 }

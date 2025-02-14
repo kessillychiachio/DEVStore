@@ -1,12 +1,92 @@
+import { useState, useEffect } from "react";
+import styled from "styled-components";
 import Formulario from "../Components/Formulario";
+import BookCard from "../Components/BookCard";
+
+const EstanteContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin: 40px auto;
+  max-width: 800px;
+  padding: 20px;
+  background: ${(props) => props.theme.background};
+  border: 1px solid ${(props) => props.theme.border};
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  text-align: center;
+  transition: background 0.3s ease-in-out, border 0.3s ease-in-out;
+`;
+
+const Title = styled.h2`
+  font-size: 22px;
+  font-weight: bold;
+  color: ${(props) => props.theme.text};
+  margin-bottom: 10px;
+`;
+
+const BooksContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+`;
 
 function MinhaEstante() {
+  const [shelfBooks, setShelfBooks] = useState([]);
+
+  useEffect(() => {
+    const storedBooks = JSON.parse(localStorage.getItem("minhaEstante")) || [];
+    setShelfBooks(storedBooks);
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    const formData = new FormData(e.target);
+    const title = formData.get("Título do livro");
+    const author = formData.get("Autor");
+
+    if (!title.trim() || !author.trim()) {
+      alert("Preencha todos os campos!");
+      return;
+    }
+
+    const newBook = {
+      id: Date.now(),
+      nome: title,
+      descricao: `Autor: ${author}`,
+      imagem: "https://via.placeholder.com/120x180?text=Livro", 
+    };
+
+    const updatedBooks = [...shelfBooks, newBook];
+    setShelfBooks(updatedBooks);
+    localStorage.setItem("minhaEstante", JSON.stringify(updatedBooks));
+    e.target.reset();
     alert("Livro adicionado à estante!");
   };
 
-  return <Formulario titulo="Adicionar à Estante" campos={["Título do livro", "Autor"]} onSubmit={handleSubmit} />;
+  const removeBook = (id) => {
+    const updatedBooks = shelfBooks.filter((book) => book.id !== id);
+    setShelfBooks(updatedBooks);
+    localStorage.setItem("minhaEstante", JSON.stringify(updatedBooks));
+  };
+
+  return (
+    <EstanteContainer>
+      <Title>Minha Estante</Title>
+      <Formulario titulo="Adicionar à Estante" campos={["Título do livro", "Autor"]} onSubmit={handleSubmit} />
+      {shelfBooks.length === 0 ? (
+        <p>Sua estante está vazia. Adicione alguns livros!</p>
+      ) : (
+        <BooksContainer>
+          {shelfBooks.map((book) => (
+            <BookCard key={book.id} book={book} onClick={() => removeBook(book.id)} />
+          ))}
+        </BooksContainer>
+      )}
+    </EstanteContainer>
+  );
 }
 
 export default MinhaEstante;

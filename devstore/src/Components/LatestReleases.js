@@ -1,35 +1,55 @@
 import styled from "styled-components";
+import { livros } from "../assets/books";
 import BookCard from "./BookCard";
 
-const ReleasesContainer = styled.div`
+const LatestReleasesContainer = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 15px;
   margin: 40px auto;
-  width: 90%;
+  width: 100%;
+  padding: 20px;
+  background: ${(props) => props.theme.background};
+  backdrop-filter: blur(10px);
+  text-align: center;
+  transition: background 0.3s ease-in-out, border 0.3s ease-in-out;
+`;
+
+const Title = styled.h2`
+  font-size: 30px;
+  font-weight: bold;
+  color: ${(props) => props.theme.text};
+  margin: 0;
 `;
 
 const BooksContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 15px;
-  overflow-x: auto;
-  padding: 10px;
+  justify-content: center;
 `;
 
-function LatestReleases({ books }) {
-  const handleBookClick = (book) => {
-    console.log("Livro selecionado:", book.title);
-  };
+function LatestReleases({ onBookSelect }) {
+  const latestBooks = livros.slice(-4); // Pegando os 4 últimos lançamentos
 
   return (
-    <ReleasesContainer>
-      <h2 style={{ color: "white" }}>Últimos Lançamentos</h2>
+    <LatestReleasesContainer>
+      <Title>Últimos Lançamentos</Title>
       <BooksContainer>
-        {books.map((book, index) => (
-          <BookCard key={index} book={book} onClick={handleBookClick} />
+        {latestBooks.map((livro) => (
+          <BookCard
+            key={livro.id}
+            book={{
+              title: livro.nome,
+              image: livro.imagem,
+              description: livro.descricao,
+            }}
+            onClick={() => onBookSelect(livro)}
+          />
         ))}
       </BooksContainer>
-    </ReleasesContainer>
+    </LatestReleasesContainer>
   );
 }
 
