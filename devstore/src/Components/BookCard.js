@@ -1,50 +1,43 @@
 import styled from "styled-components";
+import Button from "./Button";
 
 const Card = styled.div`
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 10px;
+  background: ${(props) => props.theme.secondary};
+  border-radius: 10px;
+  padding: 15px;
   text-align: center;
-  width: 200px;
-  transition: transform 0.3s ease-in-out;
-  backdrop-filter: blur(10px);
+  width: 220px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  backdrop-filter: blur(12px);
   cursor: pointer;
+  border: 1px solid ${(props) => props.theme.border};
 
   &:hover {
     transform: scale(1.05);
-    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+    box-shadow: 0px 0px 12px ${(props) => props.theme.primary};
+    background: ${(props) => props.theme.secondary};
   }
 
   img {
     width: 100%;
-    border-radius: 5px;
+    border-radius: 8px;
   }
 
   h3 {
-    color: white;
+    color: ${(props) => props.theme.text};
     font-size: 16px;
-    margin-top: 5px;
+    font-weight: bold;
+    margin-top: 10px;
   }
 
   p {
-    color: #ccc;
-    font-size: 12px;
+    color: ${(props) => props.theme.textSecondary};
+    font-size: 14px;
     margin-top: 5px;
   }
 
   button {
-    background: linear-gradient(90deg, #007bff, #00d4ff);
-    color: white;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 12px;
-    margin-top: 5px;
-
-    &:hover {
-      background: linear-gradient(90deg, #0056b3, #0097e6);
-    }
+    margin-top: 10px;
   }
 `;
 
@@ -54,7 +47,7 @@ function BookCard({ book, onClick }) {
       <img src={book.image} alt={book.title} />
       <h3>{book.title}</h3>
       <p>{book.description}</p>
-      <button>Ver detalhes</button>
+      <Button>Ver detalhes</Button>
     </Card>
   );
 }

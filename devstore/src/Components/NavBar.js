@@ -10,8 +10,8 @@ const Nav = styled.nav`
   justify-content: space-between;
   align-items: center;
   padding: 15px 40px;
-  background-color: ${(props) => props.theme.navBackground}; /* Agora a cor muda dinamicamente */
-  transition: background 0.3s ease-in-out; /* Animação suave ao trocar de tema */
+  background-color: ${(props) => props.theme.navBackground};
+  transition: background 0.3s ease-in-out; 
 `;
 
 const LogoWrapper = styled.div`

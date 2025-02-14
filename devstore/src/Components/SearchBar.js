@@ -10,36 +10,44 @@ const SearchContainer = styled.div`
   margin: 20px auto;
   max-width: 600px;
   padding: 20px;
-  background: rgba(255, 255, 255, 0.1);
+  background: ${(props) => props.theme.background};
+  border: 1px solid ${(props) => props.theme.border};
   border-radius: 10px;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(8px);
+  transition: background 0.3s ease-in-out, border 0.3s ease-in-out;
 `;
 
 const Title = styled.h2`
   font-size: 22px;
   font-weight: bold;
-  color: white;
+  color: ${(props) => props.theme.text};
   margin: 0;
 `;
 
 const Subtitle = styled.p`
   font-size: 16px;
-  color: #ccc;
+  color: ${(props) => props.theme.textSecondary};
   margin: 5px 0 15px 0;
 `;
 
 const SearchInput = styled.input`
   width: 100%;
   padding: 12px;
-  border: none;
+  border: 2px solid ${(props) => props.theme.border};
   border-radius: 5px;
   outline: none;
   font-size: 16px;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
+  background: ${(props) => props.theme.background};
+  color: ${(props) => props.theme.text};
+  transition: border 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 
   &::placeholder {
-    color: #ccc;
+    color: ${(props) => props.theme.textSecondary};
+  }
+
+  &:focus {
+    border-color: ${(props) => props.theme.primary};
+    box-shadow: 0px 0px 8px ${(props) => props.theme.primary};
   }
 `;
 
@@ -52,22 +60,24 @@ const ResultsContainer = styled.div`
 `;
 
 const BookCard = styled.div`
-  background: rgba(255, 255, 255, 0.1);
+  background: ${(props) => props.theme.secondary};
   border-radius: 8px;
   padding: 10px;
   text-align: center;
   width: 120px;
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
   backdrop-filter: blur(10px);
   cursor: pointer;
+  border: 1px solid ${(props) => props.theme.border};
 
   &:hover {
     transform: scale(1.05);
+    background: ${(props) => props.theme.primary};
   }
 `;
 
 const BookTitle = styled.p`
-  color: white;
+  color: ${(props) => props.theme.text};
   font-size: 14px;
   font-weight: bold;
   margin-bottom: 5px;

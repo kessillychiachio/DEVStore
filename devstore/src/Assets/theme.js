@@ -1,17 +1,17 @@
 export const lightTheme = {
-  primary: "#FC6621",
-  secondary: "#FF8C42",
-  tertiary: "#FFD2A5",
-  navBackground: "#ffffff",  // Fundo claro da Navbar
-  text: "#121212", // Texto escuro no modo claro
-  background: "#f8f9fa", // Fundo do site
+  primary: "#F27405", 
+  secondary: "#F28705", 
+  background: "#F2F2F2", 
+  text: "#262626", 
+  textSecondary: "#595859", 
+  border: "#F27405", 
 };
 
 export const darkTheme = {
-  primary: "#FC6621",
-  secondary: "#FF8C42",
-  tertiary: "#FFD2A5",
-  navBackground: "#1E1E1E",  // Fundo escuro da Navbar
-  text: "#ffffff", // Texto claro no modo escuro
-  background: "#121212", // Fundo do site
+  primary: "#F27405", 
+  secondary: "#F28705", 
+  background: "#262626", 
+  text: "#F2F2F2", 
+  textSecondary: "#BFBFBF",
+  border: "#F27405", 
 };

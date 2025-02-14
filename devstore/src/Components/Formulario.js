@@ -4,38 +4,40 @@ import { Title } from "./Title";
 const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
   max-width: 400px;
   margin: 40px auto;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  background: ${(props) => props.theme.background};
+  padding: 25px;
+  border-radius: 0 0 0 12px;
+  box-shadow: 0px 4px 8px ${(props) => props.theme.text};
   backdrop-filter: blur(10px);
   text-align: center;
+  transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 `;
 
 const Input = styled.input`
-  padding: 12px;
-  border: 2px solid transparent;
+  padding: 14px;
+  border: 1px solid ${(props) => props.theme.border};
   border-radius: 8px;
   outline: none;
-  font-size: 16px;
+  font-size: 14px;
   transition: 0.3s;
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
+  background: ${(props) => props.theme.background};
+  color: ${(props) => props.theme.text};
+  text-align: center;
 
   &:focus {
-    border-color: #00d4ff;
-    box-shadow: 0px 0px 10px rgba(0, 212, 255, 0.8);
-    background: rgba(255, 255, 255, 0.2);
+    border-color: ${(props) => props.theme.primary};
+    box-shadow: 0px 0px 10px ${(props) => props.theme.primary};
+    background: ${(props) => props.theme.secondary};
   }
 `;
 
 const Button = styled.button`
-  background: linear-gradient(90deg, #007bff, #00d4ff);
-  color: white;
-  padding: 12px;
+  background: ${(props) => props.theme.primary};
+  color: ${(props) => props.theme.text};
+  padding: 14px;
   border: none;
   cursor: pointer;
   border-radius: 8px;
@@ -43,23 +45,23 @@ const Button = styled.button`
   font-weight: bold;
   transition: 0.3s;
   letter-spacing: 1px;
+  text-transform: uppercase;
+  box-shadow: 0px 4px 10px ${(props) => props.theme.primary};
 
   &:hover {
     transform: scale(1.05);
-    background: linear-gradient(90deg, #0056b3, #0097e6);
-    box-shadow: 0px 0px 15px rgba(0, 212, 255, 0.8);
+    background: ${(props) => props.theme.secondary};
+    box-shadow: 0px 0px 12px ${(props) => props.theme.secondary};
   }
 `;
 
-function Formulario({ titulo, campos = [], onSubmit }) { // 👈 Aqui garantimos que `campos` sempre será um array
+function Formulario({ titulo, campos = [], onSubmit }) {
   return (
     <FormContainer onSubmit={onSubmit}>
-      <Title text={titulo} size="24px" color="#fff" uppercase />
-
+      <Title text={titulo} size="26px" color="inherit" uppercase />
       {campos.map((campo, index) => (
         <Input key={index} type="text" placeholder={campo} required />
       ))}
-
       <Button type="submit">Enviar</Button>
     </FormContainer>
   );
