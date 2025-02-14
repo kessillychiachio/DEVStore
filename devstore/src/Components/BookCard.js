@@ -7,7 +7,6 @@ const Card = styled.div`
   justify-content: space-between;
   align-items: center;
   background: ${(props) => props.theme.primary};
-  border-radius: 20px;
   padding: 15px;
   text-align: center;
   width: 220px;
@@ -24,7 +23,6 @@ const Card = styled.div`
 
 const BookImage = styled.img`
   width: 100%;
-  border-radius: 8px;
 `;
 
 const BookInfo = styled.div`

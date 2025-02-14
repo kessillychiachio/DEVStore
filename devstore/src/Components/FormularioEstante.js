@@ -53,7 +53,7 @@ const Button = styled.button`
 `;
 
 function FormularioEstante({ titulo, onSubmit }) {
-  const [selectedBook, setSelectedBook] = useState(""); // Estado para armazenar o livro selecionado
+  const [selectedBook, setSelectedBook] = useState("");
 
   const handleChange = (event) => {
     setSelectedBook(event.target.value);
