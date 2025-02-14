@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import GlobalStyle from "./styles/GlobalStyle";
-import NavBar from "./Components/NavBar";
+import Navbar from "./Components/Navbar";
 import Home from "./Pages/Home";
 import Categorias from "./Pages/Categorias";
 import MinhaEstante from "./Pages/MinhaEstante";
@@ -13,7 +13,7 @@ function App() {
   return (
     <Router>
       <GlobalStyle/>
-      <NavBar />
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/Categorias" element={<Categorias />} />

@@ -1,12 +1,24 @@
-import Formulario from "../Components/Formulario";
+import { useState } from "react";
+import SearchBar from "../Components/SearchBar";
+import BookCard from "../Components/BookCard";
 
 function Home() {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert("Bem-vindo à Loja de Livros!");
-  };
+  const [selectedBook, setSelectedBook] = useState(null);
 
-  return <Formulario titulo="Bem-vindo!" campos={["Digite seu nome"]} onSubmit={handleSubmit} />;
+  return (
+    <div>
+      <SearchBar onBookSelect={setSelectedBook} />
+      {selectedBook && (
+        <BookCard
+          book={{
+            title: selectedBook.nome,
+            image: selectedBook.imagem,
+            description: selectedBook.descricao,
+          }}
+        />
+      )}
+    </div>
+  );
 }
 
 export default Home;

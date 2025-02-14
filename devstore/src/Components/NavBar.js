@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import Logo from "../Components/Logo";
-import Icon from "../Components/Icon";
-import { sacola, perfil } from "../Assets/Icons";
+import Logo from "./Logo";
+import Icon from "./Icon";
+import { sacola, perfil } from "../assets/Icons";
 
 const Nav = styled.nav`
   display: flex;
