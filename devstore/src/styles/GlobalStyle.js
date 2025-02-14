@@ -7,10 +7,21 @@ const GlobalStyle = createGlobalStyle`
   box-sizing: border-box;
   font-family: Arial, Helvetica, sans-serif;
 }
+
 body {
-  background-color: #f8f9fa;
-  padding: 20px;
+  background-color: ${(props) => props.theme.background};
+  color: ${(props) => props.theme.text};
+  transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
 }
-`
+
+a {
+  color: ${(props) => props.theme.primary};
+  text-decoration: none;
+}
+
+a:hover {
+  color: ${(props) => props.theme.secondary};
+}
+`;
 
 export default GlobalStyle;

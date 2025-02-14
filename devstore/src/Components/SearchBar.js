@@ -18,29 +18,28 @@ const SearchContainer = styled.div`
 const Title = styled.h2`
   font-size: 22px;
   font-weight: bold;
-  color: black;
+  color: white;
   margin: 0;
 `;
 
 const Subtitle = styled.p`
   font-size: 16px;
-  color: #black;
+  color: #ccc;
   margin: 5px 0 15px 0;
 `;
 
 const SearchInput = styled.input`
-  justify-content: center;
   width: 100%;
   padding: 12px;
-  border: 1px solid;
-  border-radius: 24px;
+  border: none;
+  border-radius: 5px;
   outline: none;
   font-size: 16px;
   background: rgba(255, 255, 255, 0.2);
-  color: black;
+  color: white;
 
   &::placeholder {
-    color: #black;
+    color: #ccc;
   }
 `;
 
@@ -65,17 +64,18 @@ const BookCard = styled.div`
   &:hover {
     transform: scale(1.05);
   }
+`;
 
-  img {
-    width: 100%;
-    border-radius: 5px;
-  }
+const BookTitle = styled.p`
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
+`;
 
-  p {
-    color: white;
-    font-size: 14px;
-    margin-top: 5px;
-  }
+const BookImage = styled.img`
+  width: 100%;
+  border-radius: 5px;
 `;
 
 function SearchBar({ onBookSelect }) {
@@ -110,8 +110,8 @@ function SearchBar({ onBookSelect }) {
         <ResultsContainer>
           {filteredBooks.map((livro) => (
             <BookCard key={livro.id} onClick={() => onBookSelect(livro)}>
-              <img src={livro.imagem} alt={livro.nome} />
-              <p>{livro.nome}</p>
+              <BookTitle>{livro.nome}</BookTitle>
+              <BookImage src={livro.imagem} alt={livro.nome} />
             </BookCard>
           ))}
         </ResultsContainer>
