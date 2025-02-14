@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import Formulario from "../Components/Formulario";
+import FormularioEstante from "../Components/FormularioEstante";
 import BookCard from "../Components/BookCard";
+import { livros } from "../assets/books";
 
 const EstanteContainer = styled.div`
   display: flex;
@@ -12,7 +13,6 @@ const EstanteContainer = styled.div`
   max-width: 800px;
   padding: 20px;
   background: ${(props) => props.theme.background};
-  border: 1px solid ${(props) => props.theme.border};
   border-radius: 10px;
   backdrop-filter: blur(10px);
   text-align: center;
@@ -20,7 +20,7 @@ const EstanteContainer = styled.div`
 `;
 
 const Title = styled.h2`
-  font-size: 22px;
+  font-size: 30px;
   font-weight: bold;
   color: ${(props) => props.theme.text};
   margin-bottom: 10px;
@@ -36,6 +36,7 @@ const BooksContainer = styled.div`
 function MinhaEstante() {
   const [shelfBooks, setShelfBooks] = useState([]);
 
+  // Recuperar livros do localStorage ao carregar a página
   useEffect(() => {
     const storedBooks = JSON.parse(localStorage.getItem("minhaEstante")) || [];
     setShelfBooks(storedBooks);
@@ -45,18 +46,32 @@ function MinhaEstante() {
     e.preventDefault();
     const formData = new FormData(e.target);
     const title = formData.get("Título do livro");
-    const author = formData.get("Autor");
 
-    if (!title.trim() || !author.trim()) {
-      alert("Preencha todos os campos!");
+    if (!title.trim()) {
+      alert("Selecione um livro!");
+      return;
+    }
+
+    // Encontrar o livro correspondente na lista importada
+    const selectedBook = livros.find((livro) => livro.nome === title);
+
+    if (!selectedBook) {
+      alert("Livro não encontrado na lista!");
+      return;
+    }
+
+    // Verificar se o livro já está na estante
+    const alreadyInShelf = shelfBooks.some((book) => book.nome === title);
+    if (alreadyInShelf) {
+      alert("Este livro já está na sua estante!");
       return;
     }
 
     const newBook = {
       id: Date.now(),
-      nome: title,
-      descricao: `Autor: ${author}`,
-      imagem: "https://via.placeholder.com/120x180?text=Livro", 
+      nome: selectedBook.nome,
+      descricao: `Autor: ${selectedBook.autor}`,
+      imagem: selectedBook.imagem || "https://via.placeholder.com/120x180?text=Livro",
     };
 
     const updatedBooks = [...shelfBooks, newBook];
@@ -75,7 +90,7 @@ function MinhaEstante() {
   return (
     <EstanteContainer>
       <Title>Minha Estante</Title>
-      <Formulario titulo="Adicionar à Estante" campos={["Título do livro", "Autor"]} onSubmit={handleSubmit} />
+      <FormularioEstante titulo="Adicionar à Estante" onSubmit={handleSubmit} />
       {shelfBooks.length === 0 ? (
         <p>Sua estante está vazia. Adicione alguns livros!</p>
       ) : (

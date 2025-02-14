@@ -13,7 +13,7 @@ function Home() {
       const randomIndex = Math.floor(Math.random() * livros.length);
       const randomBook = livros[randomIndex];
 
-      console.log("Livro recomendado:", randomBook); // 🚀 Depuração
+      console.log("Livro recomendado:", randomBook);
       setRecommendedBook(randomBook);
     } else {
       console.log("Nenhum livro encontrado! Verifique a importação.");
