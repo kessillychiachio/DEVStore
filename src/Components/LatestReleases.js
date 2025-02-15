@@ -31,7 +31,7 @@ const BooksContainer = styled.div`
 `;
 
 function LatestReleases({ onBookSelect }) {
-  const latestBooks = livros.slice(-4); // Pegando os 4 últimos lançamentos
+  const latestBooks = livros.slice(-4); 
 
   return (
     <LatestReleasesContainer>
@@ -40,11 +40,7 @@ function LatestReleases({ onBookSelect }) {
         {latestBooks.map((livro) => (
           <BookCard
             key={livro.id}
-            book={{
-              title: livro.nome,
-              image: livro.imagem,
-              description: livro.descricao,
-            }}
+            livro={livro}
             onClick={() => onBookSelect(livro)}
           />
         ))}

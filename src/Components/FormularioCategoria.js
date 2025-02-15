@@ -1,17 +1,18 @@
 import styled from "styled-components";
 import { Title } from "./Title";
+import {rgba} from "polished";
 
 const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  max-width: 400px;
+  max-width: 300px;
   margin: 40px auto;
-  background: ${(props) => props.theme.background};
+  background: ${({theme}) => rgba(theme.special, 0.8)};
   padding: 25px;
   border-radius: 20px;
-  box-shadow: 0px 4px 8px ${(props) => props.theme.text};
-  backdrop-filter: blur(10px);
+  box-shadow: 1px 1px 1px 1px ${(props) => props.theme.textSecondary};
+  backdrop-filter: blur(20px);
   text-align: center;
   transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 `;
@@ -29,12 +30,12 @@ const Input = styled.input`
 
   &:focus {
     border-color: ${(props) => props.theme.secondary};
-    box-shadow: 0px 0px 10px ${(props) => props.theme.secondary};
   }
 `;
 
 const Button = styled.button`
   color: ${(props) => props.theme.text};
+  background-color: transparent;
   padding: 14px;
   border: none;
   cursor: pointer;
@@ -50,10 +51,10 @@ const Button = styled.button`
   }
 `;
 
-function Formulario({ titulo, campos = [], onSubmit }) {
+function FormularioCategoria({ titulo, campos = [], onSubmit }) {
   return (
     <FormContainer onSubmit={onSubmit}>
-      <Title text={titulo} size="26px" color="inherit" uppercase />
+      <Title text={titulo} size="18px" color="inherit" uppercase />
       {campos.map((campo, index) => (
         <Input key={index} type="text" placeholder={campo} required />
       ))}
@@ -62,4 +63,4 @@ function Formulario({ titulo, campos = [], onSubmit }) {
   );
 }
 
-export default Formulario;
+export default FormularioCategoria;

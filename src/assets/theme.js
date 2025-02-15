@@ -5,6 +5,7 @@ export const lightTheme = {
   text: "#262626", // Preto suave para legibilidade
   textSecondary: "#595959", // Cinza médio para elementos secundários
   border: "#D4D4D4", // Cinza claro para separar seções sutilmente
+  special: "#A3A3A3",
 };
 
 export const darkTheme = {
@@ -14,4 +15,5 @@ export const darkTheme = {
   text: "#E5E5E5", // Branco acinzentado para leitura confortável
   textSecondary: "#A3A3A3", // Cinza suave para detalhes
   border: "#6B7280", // Cinza médio para sutis divisões
+  special: "#3E3D40",
 };

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import BookCard from "./BookCard";
+import livros from "../assets/books";
 
 const CardContainer = styled.div`
   display: flex;
@@ -23,7 +24,7 @@ const Title = styled.h3`
 `;
 
 function RecommendationCard({ book }) {
-  if (!book) return null;
+  if (!book) return null; //
 
   return (
     <CardContainer>

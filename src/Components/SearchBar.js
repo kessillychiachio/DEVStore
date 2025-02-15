@@ -11,7 +11,6 @@ const SearchContainer = styled.div`
   max-width: 600px;
   padding: 20px;
   background: ${(props) => props.theme.background};
-  border-radius: 10px;
   backdrop-filter: blur(8px);
   transition: background 0.3s ease-in-out, border 0.3s ease-in-out;
 `;
@@ -59,11 +58,10 @@ const ResultsContainer = styled.div`
 `;
 
 const BookCard = styled.div`
-  background: ${(props) => props.theme.secondary};
-  border-radius: 8px;
+  background: ${(props) => props.theme.primary};
   padding: 10px;
   text-align: center;
-  width: 120px;
+  width: 300px;
   transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
   backdrop-filter: blur(10px);
   cursor: pointer;
@@ -84,7 +82,7 @@ const BookTitle = styled.p`
 
 const BookImage = styled.img`
   width: 100%;
-  border-radius: 5px;
+  border-radius: 15px;
 `;
 
 function SearchBar({ onBookSelect }) {

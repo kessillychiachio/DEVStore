@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import Formulario from "../Components/Formulario";
+import FormularioCategorias from "../Components/FormularioCategorias";
 
 const CategoriasContainer = styled.div`
   display: flex;
@@ -11,7 +11,6 @@ const CategoriasContainer = styled.div`
   max-width: 800px;
   padding: 20px;
   background: ${(props) => props.theme.background};
-  border: 1px solid ${(props) => props.theme.border};
   border-radius: 10px;
   backdrop-filter: blur(10px);
   text-align: center;
@@ -76,7 +75,7 @@ function Categorias() {
   return (
     <CategoriasContainer>
       <Title>Gerenciar Categorias</Title>
-      <Formulario titulo="Adicionar Categoria" campos={["Categoria"]} onSubmit={handleSubmit} />
+      <FormularioCategorias titulo="Adicionar Categoria" campos={["Categoria"]} onSubmit={handleSubmit} />
       <CategoriesList>
         {categories.length === 0 ? (
           <p>Nenhuma categoria adicionada ainda.</p>
