@@ -1,6 +1,7 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useState } from "react";
-import { livros } from "../assets/books";
+import { getLivros } from "../servicos/livros";
 
 const SearchContainer = styled.div`
   display: flex;
@@ -32,7 +33,7 @@ const SearchInput = styled.input`
   width: 100%;
   padding: 12px;
   border: 2px solid ${(props) => props.theme.border};
-  border-radius:20px;
+  border-radius: 20px;
   outline: none;
   font-size: 16px;
   background: ${(props) => props.theme.background};
@@ -69,7 +70,7 @@ const BookCard = styled.div`
 
   &:hover {
     transform: scale(1.05);
-    background: ${(props) => props.theme.primary};
+    background: ${(props) => props.theme.secondary};
   }
 `;
 
@@ -86,8 +87,18 @@ const BookImage = styled.img`
 `;
 
 function SearchBar({ onBookSelect }) {
+  const [livros, setLivros] = useState([]);
   const [query, setQuery] = useState("");
   const [filteredBooks, setFilteredBooks] = useState([]);
+
+  useEffect(() => {
+    const fetchLivros = async () => {
+      const data = await getLivros();
+      setLivros(data);
+    };
+
+    fetchLivros();
+  }, []);
 
   const handleSearch = (e) => {
     const searchTerm = e.target.value.toLowerCase();
