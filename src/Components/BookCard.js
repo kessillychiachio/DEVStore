@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import Button from "./Button";
+import favIconSrc from "../assets/favoritar.svg";
+import { useState } from "react";
 
 const Card = styled.div`
   display: flex;
@@ -9,11 +11,13 @@ const Card = styled.div`
   background: ${(props) => props.theme.primary};
   padding: 15px;
   text-align: center;
-  width: 220px;
+  width: 240px;
   height: 460px;
+  margin:20px;
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   backdrop-filter: blur(12px);
   cursor: pointer;
+  position: relative;
 
   &:hover {
     transform: scale(1.05);
@@ -21,7 +25,17 @@ const Card = styled.div`
   }
 `;
 
+const FavIconStyled = styled.img`
+  width: 20px;
+  height: auto;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+`;
+
 const BookImage = styled.img`
+  margin-top: 15px;
   width: 100%;
 `;
 
@@ -56,12 +70,16 @@ const ButtonWrapper = styled.div`
 `;
 
 function BookCard({ livro, onClick }) {
-  const storedBooks = JSON.parse(localStorage.getItem("minhaEstante")) || [];
-  const isBookAlreadyAdded = storedBooks.some((b) => b.nome === livro.nome);
+  const [shelfBooks, setShelfBooks] = useState(
+    JSON.parse(localStorage.getItem("minhaEstante")) || []
+  );
+
+  const isBookAlreadyAdded = shelfBooks.some((b) => b.nome === livro.nome);
 
   const handleAddToShelf = () => {
     if (!isBookAlreadyAdded) {
-      const updatedBooks = [...storedBooks, livro];
+      const updatedBooks = [...shelfBooks, livro];
+      setShelfBooks(updatedBooks);
       localStorage.setItem("minhaEstante", JSON.stringify(updatedBooks));
       alert("Livro adicionado à estante!");
     }
@@ -69,6 +87,7 @@ function BookCard({ livro, onClick }) {
 
   return (
     <Card>
+      <FavIconStyled src={favIconSrc} alt="Favoritar livro" />
       <BookImage src={livro.imagem} alt={livro.nome} />
       <BookInfo>
         <BookTitle>{livro.nome}</BookTitle>

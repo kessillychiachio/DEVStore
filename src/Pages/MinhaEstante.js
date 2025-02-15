@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import FormularioEstante from "../Components/FormularioEstante";
 import BookCard from "../Components/BookCard";
-import { livros } from "../assets/books";
 
 const EstanteContainer = styled.div`
   display: flex;
@@ -20,85 +19,63 @@ const EstanteContainer = styled.div`
 `;
 
 const Title = styled.h2`
-  font-size: 30px;
+  font-size: 22px;
   font-weight: bold;
   color: ${(props) => props.theme.text};
   margin-bottom: 10px;
 `;
 
-const BooksContainer = styled.div`
+const BooksGrid = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 20px;
   justify-content: center;
 `;
 
 function MinhaEstante() {
   const [shelfBooks, setShelfBooks] = useState([]);
 
-  // Recuperar livros do localStorage ao carregar a página
+  // 🔹 Carrega os livros salvos do localStorage ao iniciar
   useEffect(() => {
     const storedBooks = JSON.parse(localStorage.getItem("minhaEstante")) || [];
-    setShelfBooks(storedBooks);
+    if (Array.isArray(storedBooks)) {
+      setShelfBooks(storedBooks.filter((book) => book && book.nome)); // 🔹 Remove valores inválidos
+    }
   }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const title = formData.get("Título do livro");
-
-    if (!title.trim()) {
-      alert("Selecione um livro!");
-      return;
-    }
-
-    // Encontrar o livro correspondente na lista importada
-    const selectedBook = livros.find((livro) => livro.nome === title);
-
-    if (!selectedBook) {
-      alert("Livro não encontrado na lista!");
-      return;
-    }
-
-    // Verificar se o livro já está na estante
-    const alreadyInShelf = shelfBooks.some((book) => book.nome === title);
-    if (alreadyInShelf) {
-      alert("Este livro já está na sua estante!");
-      return;
-    }
+  // 🔹 Adiciona um livro e salva no localStorage corretamente
+  const handleAddBook = (bookName) => {
+    if (!bookName.trim()) return;
 
     const newBook = {
       id: Date.now(),
-      nome: selectedBook.nome,
-      descricao: `Autor: ${selectedBook.autor}`,
-      imagem: selectedBook.imagem || "https://via.placeholder.com/120x180?text=Livro",
+      nome: bookName,
+      image: "https://via.placeholder.com/150x220?text=Livro",
+      descricao: "Livro adicionado à estante",
     };
 
-    const updatedBooks = [...shelfBooks, newBook];
-    setShelfBooks(updatedBooks);
-    localStorage.setItem("minhaEstante", JSON.stringify(updatedBooks));
-    e.target.reset();
-    alert("Livro adicionado à estante!");
-  };
-
-  const removeBook = (id) => {
-    const updatedBooks = shelfBooks.filter((book) => book.id !== id);
-    setShelfBooks(updatedBooks);
-    localStorage.setItem("minhaEstante", JSON.stringify(updatedBooks));
+    setShelfBooks((prevBooks) => {
+      const updatedBooks = [...prevBooks, newBook];
+      localStorage.setItem("minhaEstante", JSON.stringify(updatedBooks));
+      return updatedBooks;
+    });
   };
 
   return (
     <EstanteContainer>
       <Title>Minha Estante</Title>
-      <FormularioEstante titulo="Adicionar à Estante" onSubmit={handleSubmit} />
-      {shelfBooks.length === 0 ? (
-        <p>Sua estante está vazia. Adicione alguns livros!</p>
+      <FormularioEstante titulo="Adicionar Livro à Estante" onSubmit={handleAddBook} />
+
+      {shelfBooks.length > 0 ? (
+        <BooksGrid>
+          {shelfBooks
+            .filter((book) => book && book.nome) // 🔹 Filtra livros válidos antes de exibir
+            .map((book) => (
+              <BookCard key={book.id} book={book} onClick={() => console.log("Livro clicado:", book.nome)} />
+            ))}
+        </BooksGrid>
       ) : (
-        <BooksContainer>
-          {shelfBooks.map((book) => (
-            <BookCard key={book.id} livro={book} onClick={() => removeBook(book.id)} />
-          ))}
-        </BooksContainer>
+        <p>Nenhum livro adicionado à estante.</p>
       )}
     </EstanteContainer>
   );

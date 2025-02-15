@@ -1,5 +1,5 @@
 import livro1 from "./images/livro1.png";
-import livro2 from "./images/livro2.jpeg";
+import livro2 from "./images/livro2.png";
 import livro3 from "./images/livro3.png";
 import livro4 from "./images/livro4.png";
 
