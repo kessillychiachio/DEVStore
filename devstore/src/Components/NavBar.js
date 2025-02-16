@@ -67,13 +67,14 @@ function Navbar({ toggleTheme, isDarkMode }) {
       </NavLinks>
 
       <IconWrapper>
-        <ThemeToggle toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
+        
         <Link to="/Sacola">
           <Icon src={sacola} alt="Ícone de sacola" size="22px" clickable />
         </Link>
         <Link to="/Login">
           <Icon src={perfil} alt="Ícone de perfil" size="24px" clickable />
         </Link>
+        <ThemeToggle toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
       </IconWrapper>
     </Nav>
   );

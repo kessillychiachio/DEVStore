@@ -61,6 +61,10 @@ function FormularioEstante({ titulo, onSubmit }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (!selectedBook) {
+      alert("Por favor, selecione um livro.");
+      return;
+    }
     onSubmit(selectedBook);
     setSelectedBook("");
   };

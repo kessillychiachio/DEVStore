@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import Button from "./Button";
+import FavoritoSVG from "./FavoritoSVG";
+import { useState } from "react";
 
 const Card = styled.div`
   display: flex;
@@ -9,11 +11,13 @@ const Card = styled.div`
   background: ${(props) => props.theme.primary};
   padding: 15px;
   text-align: center;
-  width: 220px;
-  height: 460px;
+  width: 240px;
+  height: 500px;
+  margin:20px;
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   backdrop-filter: blur(12px);
   cursor: pointer;
+  position: relative;
 
   &:hover {
     transform: scale(1.05);
@@ -22,6 +26,7 @@ const Card = styled.div`
 `;
 
 const BookImage = styled.img`
+  margin-top: 15px;
   width: 100%;
 `;
 
@@ -36,9 +41,8 @@ const BookInfo = styled.div`
 
 const BookTitle = styled.h3`
   color: ${(props) => props.theme.text};
-  font-weight: 900;
-  font-size: 16px;
   font-weight: bold;
+  font-size: 16px;
   margin-top: 10px;
 `;
 
@@ -56,29 +60,34 @@ const ButtonWrapper = styled.div`
   background: none;
 `;
 
-function BookCard({ book, onClick }) {
-  const handleAddToShelf = () => {
-    const storedBooks = JSON.parse(localStorage.getItem("minhaEstante")) || [];
-    const isBookAlreadyAdded = storedBooks.some((b) => b.id === book.id);
+function BookCard({ livro, onClick }) {
+  const [shelfBooks, setShelfBooks] = useState(
+    JSON.parse(localStorage.getItem("minhaEstante")) || []
+  );
 
+  const isBookAlreadyAdded = shelfBooks.some((b) => b.nome === livro.nome);
+
+  const handleAddToShelf = () => {
     if (!isBookAlreadyAdded) {
-      const updatedBooks = [...storedBooks, book];
+      const updatedBooks = [...shelfBooks, livro];
+      setShelfBooks(updatedBooks);
       localStorage.setItem("minhaEstante", JSON.stringify(updatedBooks));
       alert("Livro adicionado à estante!");
-    } else {
-      alert("Este livro já está na sua estante!");
     }
   };
 
   return (
     <Card>
-      <BookImage src={book.image} alt={book.title} />
+      <FavoritoSVG/>
+      <BookImage src={livro.imagem} alt={livro.nome} />
       <BookInfo>
-        <BookTitle>{book.title}</BookTitle>
-        <BookDescription>{book.description}</BookDescription>
+        <BookTitle>{livro.nome}</BookTitle>
+        <BookDescription>{livro.descricao}</BookDescription>
       </BookInfo>
       <ButtonWrapper>
-        <Button onClick={handleAddToShelf}>Adicionar à Estante</Button>
+        <Button onClick={handleAddToShelf} disabled={isBookAlreadyAdded}>
+          {isBookAlreadyAdded ? "Já na Estante" : "Adicionar à Estante"}
+        </Button>
       </ButtonWrapper>
     </Card>
   );
