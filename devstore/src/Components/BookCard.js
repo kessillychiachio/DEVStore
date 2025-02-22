@@ -72,8 +72,7 @@ function BookCard({ livro }) {
   const [favoritos, setFavoritos] = useState(
     JSON.parse(localStorage.getItem("favoritos")) || []
   );
-  const [favoritado, setFavoritado] = useState(false); // 🔹 Estado interno para re-renderizar
-
+  const [favoritado, setFavoritado] = useState(false); 
   useEffect(() => {
     setFavoritado(favoritos.some((b) => b.nome === livro.nome));
   }, [favoritos, livro.nome]);
@@ -89,7 +88,7 @@ function BookCard({ livro }) {
 
     setFavoritos(updatedFavoritos);
     localStorage.setItem("favoritos", JSON.stringify(updatedFavoritos));
-    setFavoritado(!favoritado); // 🔹 Atualiza o estado para re-renderizar
+    setFavoritado(!favoritado); 
   };
 
   const handleAddToShelf = () => {

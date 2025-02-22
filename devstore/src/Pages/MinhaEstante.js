@@ -35,15 +35,14 @@ const BooksGrid = styled.div`
 function MinhaEstante() {
   const [shelfBooks, setShelfBooks] = useState([]);
 
-  // 🔹 Carrega os livros salvos do localStorage ao iniciar
+
   useEffect(() => {
     const storedBooks = JSON.parse(localStorage.getItem("minhaEstante")) || [];
     if (Array.isArray(storedBooks)) {
-      setShelfBooks(storedBooks.filter((book) => book && book.nome)); // 🔹 Remove valores inválidos
+      setShelfBooks(storedBooks.filter((book) => book && book.nome)); 
     }
   }, []);
 
-  // 🔹 Adiciona um livro e salva no localStorage corretamente
   const handleAddBook = (bookName) => {
     if (!bookName.trim()) return;
 
@@ -69,7 +68,7 @@ function MinhaEstante() {
       {shelfBooks.length > 0 ? (
         <BooksGrid>
           {shelfBooks
-            .filter((book) => book && book.nome) // 🔹 Filtra livros válidos antes de exibir
+            .filter((book) => book && book.nome)
             .map((book) => (
               <BookCard key={book.id} book={book} onClick={() => console.log("Livro clicado:", book.nome)} />
             ))}

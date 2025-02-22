@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import BookCard from "./BookCard";
-import livros from "../assets/books";
+import livros from "../Assets/books";
 
 const CardContainer = styled.div`
   display: flex;

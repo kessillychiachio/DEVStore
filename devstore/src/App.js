@@ -5,7 +5,6 @@ import { lightTheme, darkTheme } from "./Assets/theme";
 import GlobalStyle from "./styles/GlobalStyle";
 import Navbar from "./Components/NavBar";
 import Home from "./Pages/Home";
-import Categorias from "./Pages/Categorias";
 import MinhaEstante from "./Pages/MinhaEstante";
 import Favoritos from "./Pages/Favoritos";
 import Sacola from "./Pages/Sacola";
@@ -25,7 +24,6 @@ function App() {
         <Navbar toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/Categorias" element={<Categorias />} />
           <Route path="/MinhaEstante" element={<MinhaEstante />} />
           <Route path="/Favoritos" element={<Favoritos />} />
           <Route path="/Sacola" element={<Sacola />} />
