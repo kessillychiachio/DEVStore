@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { livros } from "../assets/books";
+import { livros } from "../Assets/books";
 import { Title } from "./Title";
 import { rgba } from "polished";
 

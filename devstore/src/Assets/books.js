@@ -9,23 +9,27 @@ export const livros = [
     nome: "Liderança em Design",
     descricao: "Habilidades de gestão para alavancar sua carreira",
     imagem: livro1,
+    categoria:"Design",
   },
   {
     id: 2,
     nome: "JavaScript descomplicado",
     descricao: "Domine a linguagem JavaScript e crie projetos incríveis.",
     imagem: livro2,
+    categoria:"JavaScript",
   },
   {
     id: 3,
     nome: "Use a cabeça! Programação JavaScript",
     descricao: "O guia amigo do cérebro",
     imagem: livro3,
+    categoria:"JavaScript",
   },
   {
     id: 4,
     nome: "JavaScript - o guia definitivo",
     descricao: "Aprimore suas habilidades dominando JavaScript e CSS para web.",
     imagem: livro4,
+    categoria:"JavaScript",
   },
 ];

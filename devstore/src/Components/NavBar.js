@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "./Logo";
-import Icon from "./Icon";
 import ThemeToggle from "./ThemeToggle";
-import { sacola, perfil } from "../assets/Icons";
+import Icon from "../Assets/Icons";
 
 const Nav = styled.nav`
   display: flex;
@@ -68,12 +67,13 @@ function Navbar({ toggleTheme, isDarkMode }) {
 
       <IconWrapper>
         
-        <Link to="/Sacola">
-          <Icon src={sacola} alt="Ícone de sacola" size="22px" clickable />
-        </Link>
-        <Link to="/Login">
-          <Icon src={perfil} alt="Ícone de perfil" size="24px" clickable />
-        </Link>
+      <Link to="/Sacola">
+        <img src={Icon.sacola} alt="Ícone de sacola" width="22px" />
+      </Link>
+      <Link to="/Login">
+        <img src={Icon.perfil} alt="Ícone de perfil" width="24px" />
+      </Link>
+
         <ThemeToggle toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
       </IconWrapper>
     </Nav>
