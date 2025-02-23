@@ -10,8 +10,22 @@ async function getLivros() {
     return response.data;
   } catch (error) {
     console.error("Erro ao buscar livros:", error);
-    return []; 
+    return [];
   }
 }
 
-export { getLivros };
+async function addLivro(formData) {
+  try {
+    const response = await livrosAPI.post("/", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao adicionar livro:", error);
+    throw error;
+  }
+}
+
+export { getLivros, addLivro };

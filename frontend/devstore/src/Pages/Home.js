@@ -5,7 +5,7 @@ import RecommendationCard from "../components/RecommendationCard";
 import { getLivros } from "../services/livros";
 
 function Home() {
-  const [selectedBook, setSelectedBook] = useState(null);
+  const [setSelectedBook] = useState(null);
   const [recommendedBook, setRecommendedBook] = useState(null);
 
   useEffect(() => {

@@ -38,7 +38,7 @@ function App() {
         <Navbar toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/minha-estante" element={<MinhaEstante />} />
+          <Route path="/MinhaEstante" element={<MinhaEstante />} />
           <Route path="/favoritos" element={<Favoritos />} />
           <Route path="/sacola" element={<Sacola />} />
           <Route path="/login" element={<Login />} />

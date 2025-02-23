@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Button from "./Button";
 import FavoritoSVG from "./FavoritoSVG";
+import { useState, useEffect } from "react";
 import { getFavoritos, addFavorito, removeFavorito } from "../services/favoritos";
 import { getEstante, addLivroEstante, removeLivroEstante } from "../services/estante";
 
@@ -81,26 +81,24 @@ const ButtonWrapper = styled.div`
   justify-content: center;
 `;
 
-function BookCard({ livro, onRemoveBook, onAddBook }) {
+function BookCard({ livro }) {
   const [favoritado, setFavoritado] = useState(false);
   const [naEstante, setNaEstante] = useState(false);
 
   useEffect(() => {
-    async function checkStatus() {
+    async function fetchStatus() {
       try {
         const favoritos = await getFavoritos();
-        const estante = await getEstante();
-        
         setFavoritado(favoritos.some((b) => b.id === livro.id));
+
+        const estante = await getEstante();
         setNaEstante(estante.some((b) => b.id === livro.id));
       } catch (error) {
         console.error("Erro ao buscar status do livro:", error);
       }
     }
-    checkStatus();
+    fetchStatus();
   }, [livro]);
-
-  if (!livro || !livro.id) return null;
 
   const handleFavoriteToggle = async () => {
     try {
@@ -115,23 +113,16 @@ function BookCard({ livro, onRemoveBook, onAddBook }) {
     }
   };
 
-  const handleAddToEstante = async () => {
+  const handleEstanteToggle = async () => {
     try {
-      await addLivroEstante(livro.id);
-      setNaEstante(true);
-      onAddBook && onAddBook(livro);
+      if (naEstante) {
+        await removeLivroEstante(livro.id);
+      } else {
+        await addLivroEstante(livro);
+      }
+      setNaEstante(!naEstante);
     } catch (error) {
-      console.error("Erro ao adicionar à estante:", error);
-    }
-  };
-
-  const handleRemoveFromEstante = async () => {
-    try {
-      await removeLivroEstante(livro.id);
-      setNaEstante(false);
-      onRemoveBook && onRemoveBook(livro.id);
-    } catch (error) {
-      console.error("Erro ao remover da estante:", error);
+      console.error("Erro ao atualizar estante:", error);
     }
   };
 
@@ -147,15 +138,9 @@ function BookCard({ livro, onRemoveBook, onAddBook }) {
         </Overlay>
       </BookCover>
       <ButtonWrapper>
-        {naEstante ? (
-          <Button onClick={handleRemoveFromEstante} color="red">
-            Remover da Estante
-          </Button>
-        ) : (
-          <Button onClick={handleAddToEstante}>
-            Adicionar à Estante
-          </Button>
-        )}
+        <Button onClick={handleEstanteToggle} color={naEstante ? "red" : "green"}>
+          {naEstante ? "Remover da Estante" : "Adicionar à Estante"}
+        </Button>
       </ButtonWrapper>
     </BookCardWrapper>
   );

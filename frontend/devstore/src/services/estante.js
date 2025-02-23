@@ -9,26 +9,24 @@ async function getEstante() {
     const response = await estanteAPI.get("/");
     return response.data;
   } catch (error) {
-    console.error("❌ Erro ao buscar estante:", error);
+    console.error("Erro ao buscar estante:", error);
     return [];
   }
 }
 
-async function addLivroEstante(id) {
+async function addLivroEstante(livro) {
   try {
-    const response = await estanteAPI.post(`/${id}`);
-    return response.data;
+    await estanteAPI.post("/", livro);
   } catch (error) {
-    console.error("❌ Erro ao adicionar livro à estante:", error);
+    console.error("Erro ao adicionar livro à estante:", error);
   }
 }
 
 async function removeLivroEstante(id) {
   try {
-    const response = await estanteAPI.delete(`/${id}`);
-    return response.data;
+    await estanteAPI.delete(`/${id}`);
   } catch (error) {
-    console.error("❌ Erro ao remover livro da estante:", error);
+    console.error("Erro ao remover livro da estante:", error);
   }
 }
 

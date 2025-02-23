@@ -1,46 +1,24 @@
-const fs = require("fs")
+const fs = require("fs");
+const caminhoLivros = "livros.json";
+const { adicionarLivroEstante } = require("./estante");
 
 function getTodosLivros() {
-    return JSON.parse( fs.readFileSync("livros.json") )
+    if (!fs.existsSync(caminhoLivros)) {
+        fs.writeFileSync(caminhoLivros, "[]");
+    }
+    return JSON.parse(fs.readFileSync(caminhoLivros, "utf-8"));
 }
 
-function getLivroPorId(id) {
-    const livros = JSON.parse(fs.readFileSync("livros.json"))
-
-    const livroFiltrado = livros.filter( livro => livro.id === id )[0]
-    return livroFiltrado
-}
-
-function insereLivro(livroNovo) {
-    const livros = JSON.parse(fs.readFileSync("livros.json"))
-
-    const novaListaDeLivros = [ ...livros, livroNovo ]
-
-    fs.writeFileSync("livros.json", JSON.stringify(novaListaDeLivros))
-}
-
-function modificaLivro(modificacoes,  id) {
-    let livrosAtuais = JSON.parse(fs.readFileSync("livros.json"))
+function insereLivro(novoLivro) {
+    const livros = getTodosLivros();
+    novoLivro.id = Date.now().toString();
+    livros.push(novoLivro);
     
-    const indiceModificado = livrosAtuais.findindex(livro => livro.id === id)
+    fs.writeFileSync(caminhoLivros, JSON.stringify(livros, null, 2));
+
+    adicionarLivroEstante(novoLivro); 
     
-    const conteudoMudado = { ...livrosAtuais[indiceModificado], ...modificacoes }
-
-    livrosAtuais[indiceModificado] = conteudoMudado
-    fs.writeFileSync("livros.json", JSON.stringify(livrosAtuais))
+    return novoLivro;
 }
 
-function deletarLivroPorId(id) {
-    const livros = JSON.parse(fs.readFileSync("livros.json"))
-
-    const livrosFiltrados = livros.filter( livro => livro.id!== id )
-    fs.writeFileSync("livros.json", JSON.stringify(livrosFiltrados))
-}
-
-module.exports = {
-    getTodosLivros,
-    getLivroPorId,
-    insereLivro,
-    modificaLivro,
-    deletarLivroPorId
-}
+module.exports = { getTodosLivros, insereLivro };
