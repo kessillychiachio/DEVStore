@@ -35,11 +35,10 @@ const BooksGrid = styled.div`
 function MinhaEstante() {
   const [shelfBooks, setShelfBooks] = useState([]);
 
-
   useEffect(() => {
     const storedBooks = JSON.parse(localStorage.getItem("minhaEstante")) || [];
     if (Array.isArray(storedBooks)) {
-      setShelfBooks(storedBooks.filter((book) => book && book.nome)); 
+      setShelfBooks(storedBooks.filter((book) => book && book.nome));
     }
   }, []);
 
@@ -49,7 +48,7 @@ function MinhaEstante() {
     const newBook = {
       id: Date.now(),
       nome: bookName,
-      image: "https://via.placeholder.com/150x220?text=Livro",
+      imagem: "https://via.placeholder.com/150x220?text=Livro",
       descricao: "Livro adicionado à estante",
     };
 
@@ -60,6 +59,12 @@ function MinhaEstante() {
     });
   };
 
+  const handleRemoveBook = (bookId) => {
+    const updatedBooks = shelfBooks.filter((book) => book.id !== bookId);
+    setShelfBooks(updatedBooks);
+    localStorage.setItem("minhaEstante", JSON.stringify(updatedBooks));
+  };
+
   return (
     <EstanteContainer>
       <Title>Minha Estante</Title>
@@ -67,11 +72,9 @@ function MinhaEstante() {
 
       {shelfBooks.length > 0 ? (
         <BooksGrid>
-          {shelfBooks
-            .filter((book) => book && book.nome)
-            .map((book) => (
-              <BookCard key={book.id} book={book} onClick={() => console.log("Livro clicado:", book.nome)} />
-            ))}
+          {shelfBooks.map((book) => (
+            <BookCard key={book.id} livro={book} onRemoveBook={handleRemoveBook} />
+          ))}
         </BooksGrid>
       ) : (
         <p>Nenhum livro adicionado à estante.</p>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getLivros } from "../services/livros";
+import BookCard from "../components/BookCard";
 
 const SearchContainer = styled.div`
   display: flex;
@@ -57,34 +58,6 @@ const ResultsContainer = styled.div`
   margin-top: 15px;
 `;
 
-const BookCard = styled.div`
-  background: ${(props) => props.theme.primary};
-  padding: 10px;
-  text-align: center;
-  width: 300px;
-  transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
-  backdrop-filter: blur(10px);
-  cursor: pointer;
-  border: 1px solid ${(props) => props.theme.border};
-
-  &:hover {
-    transform: scale(1.05);
-    background: ${(props) => props.theme.secondary};
-  }
-`;
-
-const BookTitle = styled.p`
-  color: ${(props) => props.theme.text};
-  font-size: 14px;
-  font-weight: bold;
-  margin-bottom: 5px;
-`;
-
-const BookImage = styled.img`
-  width: 100%;
-  border-radius: 15px;
-`;
-
 function SearchBar({ onBookSelect }) {
   const [livros, setLivros] = useState([]);
   const [query, setQuery] = useState("");
@@ -92,8 +65,19 @@ function SearchBar({ onBookSelect }) {
 
   useEffect(() => {
     const fetchLivros = async () => {
-      const data = await getLivros();
-      setLivros(data);
+      try {
+        const data = await getLivros();
+        if (Array.isArray(data)) {
+          setLivros(data.map(livro => ({
+            ...livro,
+            imagem: livro.imagem || "https://via.placeholder.com/150x220?text=Sem+Imagem",
+          })));
+        } else {
+          console.error("Dados inválidos recebidos do backend:", data);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar livros:", error);
+      }
     };
 
     fetchLivros();
@@ -126,10 +110,7 @@ function SearchBar({ onBookSelect }) {
       {query.length > 0 && filteredBooks.length > 0 && (
         <ResultsContainer>
           {filteredBooks.map((livro) => (
-            <BookCard key={livro.id} onClick={() => onBookSelect(livro)}>
-              <BookTitle>{livro.nome}</BookTitle>
-              <BookImage src={livro.imagem} alt={livro.nome} />
-            </BookCard>
+            <BookCard key={livro.id} livro={livro} onBookSelect={onBookSelect} />
           ))}
         </ResultsContainer>
       )}

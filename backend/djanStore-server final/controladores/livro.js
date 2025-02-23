@@ -9,99 +9,69 @@ const {
 const path = require("path");
 const multer = require("multer");
 
+const BASE_URL = "http://localhost:8000"; 
+
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, "uploads/");
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname)); 
+    destination: "uploads/",
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname));
     }
 });
 
 const upload = multer({ storage });
 
-function getLivros(req, res) {
+const formatLivro = (livro) => ({
+    ...livro,
+    imagem: livro.imagem ? `${BASE_URL}/uploads/${livro.imagem}` : `${BASE_URL}/uploads/default.jpg`
+});
+
+const getLivros = (req, res) => {
     try {
-        const livros = getTodosLivros();
-
-        const livrosComImagens = livros.map((livro) => ({
-            ...livro,
-            imagem: livro.imagem ? `http://localhost:8000/uploads/${livro.imagem}` : null
-        }));
-
-        res.json(livrosComImagens);
+        const livros = getTodosLivros().map(formatLivro);
+        res.json(livros);
     } catch (error) {
-        res.status(500).send({ erro: "Erro ao buscar livros", detalhe: error.message });
+        res.status(500).json({ erro: "Erro ao buscar livros", detalhe: error.message });
     }
-}
+};
 
-function getLivro(req, res) {
+const getLivro = (req, res) => {
     try {
-        const id = req.params.id;
-        if (id && Number(id)) {
-            const livro = getLivroPorId(id);
-            if (!livro) {
-                return res.status(404).send({ erro: "Livro não encontrado" });
-            }
+        const livro = getLivroPorId(req.params.id);
+        if (!livro) return res.status(404).json({ erro: "Livro não encontrado" });
 
-            livro.imagem = livro.imagem ? `http://localhost:8000/uploads/${livro.imagem}` : null;
-            res.json(livro);
-        } else {
-            res.status(422).send({ erro: "ID inválido" });
-        }
+        res.json(formatLivro(livro));
     } catch (error) {
-        res.status(500).send({ erro: "Erro ao buscar livro", detalhe: error.message });
+        res.status(500).json({ erro: "Erro ao buscar livro", detalhe: error.message });
     }
-}
+};
 
-function postLivro(req, res) {
+const postLivro = (req, res) => {
     try {
-        const livroNovo = req.body;
-        
-        if (!livroNovo.nome) {
-            return res.status(422).send({ erro: "O campo nome é obrigatório" });
-        }
-
-        if (req.file) {
-            livroNovo.imagem = req.file.filename;
-        }
-
+        const livroNovo = { ...req.body, imagem: req.file?.filename || "default.jpg" };
         insereLivro(livroNovo);
-        res.status(201).send({ mensagem: "Livro inserido com sucesso" });
+        res.status(201).json({ mensagem: "Livro inserido com sucesso" });
     } catch (error) {
-        res.status(500).send({ erro: "Erro ao inserir livro", detalhe: error.message });
+        res.status(500).json({ erro: "Erro ao inserir livro", detalhe: error.message });
     }
-}
+};
 
-function patchLivro(req, res) {
+const patchLivro = (req, res) => {
     try {
-        const id = req.params.id;
-        const body = req.body;
-
-        if (!id || !Number(id)) {
-            return res.status(422).send({ erro: "ID inválido" });
-        }
-
-        modificaLivro(body, id);
-        res.send({ mensagem: "Item modificado com sucesso" });
+        modificaLivro(req.body, req.params.id);
+        res.json({ mensagem: "Livro modificado com sucesso" });
     } catch (error) {
-        res.status(500).send({ erro: "Erro ao modificar livro", detalhe: error.message });
+        res.status(500).json({ erro: "Erro ao modificar livro", detalhe: error.message });
     }
-}
+};
 
-function deleteLivro(req, res) {
+const deleteLivro = (req, res) => {
     try {
-        const id = req.params.id;
-        if (!id || !Number(id)) {
-            return res.status(422).send({ erro: "ID inválido" });
-        }
-
-        deletarLivroPorId(id);
-        res.send({ mensagem: "Livro deletado com sucesso" });
+        deletarLivroPorId(req.params.id);
+        res.json({ mensagem: "Livro deletado com sucesso" });
     } catch (error) {
-        res.status(500).send({ erro: "Erro ao deletar livro", detalhe: error.message });
+        res.status(500).json({ erro: "Erro ao deletar livro", detalhe: error.message });
     }
-}
+};
 
 module.exports = {
     getLivros,
