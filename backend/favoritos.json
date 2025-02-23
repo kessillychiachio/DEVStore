@@ -1,14 +1,1 @@
-[
-  {
-    "id": 10,
-    "nome": "JavaScript para iniciantes",
-    "descricao": "Uma abordagem passo a passo para ensinar os fundamentos do JavaScript, ideal para quem está começando na programação.",
-    "imagem": "javascriptparainiciantes.jpg"
-  },
-  {
-    "id": 11,
-    "nome": "Python na Prática",
-    "descricao": "Aprenda Python com exemplos práticos e projetos reais, desde os conceitos básicos até aplicações mais avançadas.",
-    "imagem": "pythonnapratica.jpg"
-  }
-]
+[]

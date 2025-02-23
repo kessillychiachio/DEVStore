@@ -7,10 +7,10 @@ const SearchContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px;
+  gap: 30px;
   margin: 20px auto;
   max-width: 600px;
-  padding: 20px;
+  padding: 30px;
   background: ${(props) => props.theme.background};
   backdrop-filter: blur(8px);
   transition: background 0.3s ease-in-out, border 0.3s ease-in-out;

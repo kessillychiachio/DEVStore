@@ -9,7 +9,6 @@ const BookCardWrapper = styled.div`
   width: 160px;
   height: 240px;
   background: ${(props) => props.theme.primary};
-  border-radius: 5px;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
   position: relative;
   cursor: pointer;
@@ -138,12 +137,34 @@ function BookCard({ livro }) {
         </Overlay>
       </BookCover>
       <ButtonWrapper>
-        <Button onClick={handleEstanteToggle} color={naEstante ? "red" : "green"}>
-          {naEstante ? "Remover da Estante" : "Adicionar à Estante"}
+        <Button onClick={handleEstanteToggle}>
+          {naEstante ? (
+            <>
+              <MinusIcon /> Remover da Estante
+            </>
+          ) : (
+            <>
+              <PlusIcon /> Adicionar à Estante
+            </>
+          )}
         </Button>
       </ButtonWrapper>
     </BookCardWrapper>
   );
 }
+
+/* Ícone de "+" */
+const PlusIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+    <path d="M12 5v14m-7-7h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+  </svg>
+);
+
+/* Ícone de "-" */
+const MinusIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+    <path d="M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+  </svg>
+);
 
 export default BookCard;
