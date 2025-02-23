@@ -10,22 +10,19 @@ function getEstante() {
 
 function adicionarLivroEstante(livro) {
     const estante = getEstante();
-
-    if (estante.some(l => l.id === livro.id)) {
-        console.warn(`⚠️ O livro "${livro.nome}" já está na estante.`);
+    
+    if (estante.some((l) => l.id === livro.id)) {
         return;
     }
 
     estante.push(livro);
     fs.writeFileSync(caminhoEstante, JSON.stringify(estante, null, 2));
-    console.log(`✅ Livro "${livro.nome}" adicionado à estante.`);
 }
 
 function removerLivroEstante(id) {
-    let estante = getEstante();
-    estante = estante.filter(livro => livro.id !== id);
-    fs.writeFileSync(caminhoEstante, JSON.stringify(estante, null, 2));
-    console.log(`🗑️ Livro removido da estante.`);
+    const estante = getEstante();
+    const novaEstante = estante.filter((livro) => livro.id !== id);
+    fs.writeFileSync(caminhoEstante, JSON.stringify(novaEstante, null, 2));
 }
 
 module.exports = { getEstante, adicionarLivroEstante, removerLivroEstante };

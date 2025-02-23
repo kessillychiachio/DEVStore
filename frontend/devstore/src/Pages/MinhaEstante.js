@@ -73,9 +73,9 @@ function MinhaEstante() {
   const [estante, setEstante] = useState([]);
   const [formData, setFormData] = useState({
     nome: "",
-    autor: "", 
+    autor: "",
     descricao: "",
-    imagem: "",
+    imagem: null,
   });
 
   useEffect(() => {
@@ -103,18 +103,19 @@ function MinhaEstante() {
       return;
     }
 
-    const novoLivro = {
-      id: Date.now(), 
-      nome: formData.nome,
-      autor: formData.autor, 
-      descricao: formData.descricao,
-      imagem: formData.imagem || "default.jpg",
-    };
+    const formDataToSend = new FormData();
+    formDataToSend.append("nome", formData.nome);
+    formDataToSend.append("autor", formData.autor);
+    formDataToSend.append("descricao", formData.descricao);
+    if (formData.imagem) {
+      formDataToSend.append("imagem", formData.imagem);
+    }
 
     try {
-      await addLivroEstante(novoLivro);
+      const novoLivro = await addLivroEstante(formDataToSend);
+      if (!novoLivro || !novoLivro.id) throw new Error("Erro ao adicionar livro.");
       setEstante((prev) => [...prev, novoLivro]);
-      setFormData({ nome: "", autor: "", descricao: "", imagem: "" });
+      setFormData({ nome: "", autor: "", descricao: "", imagem: null });
     } catch (error) {
       console.error("Erro ao adicionar livro:", error);
     }
@@ -126,44 +127,25 @@ function MinhaEstante() {
 
       <BooksGrid>
         {estante.length > 0 ? (
-          estante.map((livro) => (
-            <BookCard key={livro.id} livro={livro} onRemoveBook={handleRemoveBook} />
-          ))
+          estante.map((livro) =>
+            livro && livro.id ? (
+              <BookCard key={livro.id} livro={livro} onRemoveBook={handleRemoveBook} />
+            ) : (
+              <p style={{ color: "red" }}>Erro ao carregar livro.</p>
+            )
+          )
         ) : (
           <p>Sua estante está vazia.</p>
         )}
       </BooksGrid>
 
-      <p></p>
-      <Title>Gostaria de adicionar um livro?</Title>
+      <Title>Adicionar um Livro</Title>
 
       <FormContainer onSubmit={handleAddBook}>
-        <Input
-          type="text"
-          placeholder="Título do Livro"
-          value={formData.nome}
-          onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
-          required
-        />
-        <Input
-          type="text"
-          placeholder="Autor do Livro"
-          value={formData.autor}
-          onChange={(e) => setFormData({ ...formData, autor: e.target.value })}
-          required
-        />
-        <Input
-          type="text"
-          placeholder="Descrição"
-          value={formData.descricao}
-          onChange={(e) => setFormData({ ...formData, descricao: e.target.value })}
-          required
-        />
-        <Input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setFormData({ ...formData, imagem: e.target.files[0] })}
-        />
+        <Input type="text" placeholder="Título do Livro" value={formData.nome} onChange={(e) => setFormData({ ...formData, nome: e.target.value })} required />
+        <Input type="text" placeholder="Autor do Livro" value={formData.autor} onChange={(e) => setFormData({ ...formData, autor: e.target.value })} required />
+        <Input type="text" placeholder="Descrição" value={formData.descricao} onChange={(e) => setFormData({ ...formData, descricao: e.target.value })} required />
+        <Input type="file" accept="image/*" onChange={(e) => setFormData({ ...formData, imagem: e.target.files[0] })} />
         <Button type="submit">Adicionar Livro</Button>
       </FormContainer>
     </ShelfContainer>

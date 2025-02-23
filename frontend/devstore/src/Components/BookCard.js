@@ -46,7 +46,7 @@ const Overlay = styled.div`
   transition: opacity 0.3s ease-in-out;
   color: white;
   padding: 10px;
-  z-index: 1;
+  z-index: -1;
 
   ${BookCardWrapper}:hover & {
     opacity: 1;
