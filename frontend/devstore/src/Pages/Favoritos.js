@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import BookCard from "../components/BookCard";
 import styled from "styled-components";
+import { getFavoritos } from "../services/favoritos";
 
 const FavContainer = styled.div`
   display: flex;
@@ -40,12 +41,21 @@ function Favoritos() {
   const [favoritos, setFavoritos] = useState([]);
 
   useEffect(() => {
-    const storedFavoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
-    setFavoritos(storedFavoritos);
+    async function fetchFavoritos() {
+      try {
+        const storedFavoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
+        console.log("Favoritos carregados do localStorage:", storedFavoritos);
+        setFavoritos(storedFavoritos);
+      } catch (error) {
+        console.error("Erro ao buscar favoritos:", error);
+      }
+    }
+
+    fetchFavoritos();
   }, []);
 
-  const handleRemoveFavorite = (nomeLivro) => {
-    const updatedFavoritos = favoritos.filter((livro) => livro.nome !== nomeLivro);
+  const handleRemoveFavorite = (idLivro) => {
+    const updatedFavoritos = favoritos.filter((livro) => livro.id !== idLivro);
     setFavoritos(updatedFavoritos);
     localStorage.setItem("favoritos", JSON.stringify(updatedFavoritos));
   };
@@ -56,7 +66,7 @@ function Favoritos() {
       <BooksGrid>
         {favoritos.length > 0 ? (
           favoritos.map((livro) => (
-            <BookCard key={livro.nome} livro={livro} onRemoveFavorite={handleRemoveFavorite} />
+            <BookCard key={livro.id} livro={livro} onRemoveBook={handleRemoveFavorite} />
           ))
         ) : (
           <p>Nenhum livro favoritado ainda.</p>

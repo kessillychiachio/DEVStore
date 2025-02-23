@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Button from "./Button";
 import FavoritoSVG from "./FavoritoSVG";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { getFavoritos, addFavorito, removeFavorito } from "../services/favoritos";
 
 const BookCardWrapper = styled.div`
@@ -81,28 +81,25 @@ const ButtonWrapper = styled.div`
 `;
 
 function BookCard({ livro, onRemoveBook, onAddBook }) {
-  const [naEstante, setNaEstante] = useState(false);
   const [favoritado, setFavoritado] = useState(false);
 
-  useEffect(() => {
-    if (!livro) return;
+  const naEstante = useMemo(() => {
+    if (!livro) return false;
     const storedBooks = JSON.parse(localStorage.getItem("minhaEstante")) || [];
-    setNaEstante(storedBooks.some((b) => b.id === livro.id));
+    return storedBooks.some((b) => b.id === livro.id);
   }, [livro]);
 
   useEffect(() => {
     if (!livro) return;
 
-    async function checkIfFavorito() {
+    const checkIfFavorito = async () => {
       try {
         const favoritos = await getFavoritos();
-        if (Array.isArray(favoritos)) {
-          setFavoritado(favoritos.some((b) => b.id === livro.id));
-        }
+        setFavoritado(favoritos.some((b) => b.id === livro.id));
       } catch (error) {
         console.error("Erro ao buscar favoritos:", error);
       }
-    }
+    };
 
     checkIfFavorito();
   }, [livro]);
@@ -115,17 +112,20 @@ function BookCard({ livro, onRemoveBook, onAddBook }) {
     if (!livro || !livro.id) return;
 
     try {
-      let favoritosAtualizados;
+      let favoritosAtualizados = await getFavoritos() || [];
 
       if (favoritado) {
+        // Remove o livro da lista de favoritos
+        favoritosAtualizados = favoritosAtualizados.filter((b) => b.id !== livro.id);
         await removeFavorito(livro.id);
-        favoritosAtualizados = (await getFavoritos()).filter((b) => b.id !== livro.id);
       } else {
-        await addFavorito(livro);
-        favoritosAtualizados = [...(await getFavoritos()), livro];
+        if (!favoritosAtualizados.some((b) => b.id === livro.id)) {
+          favoritosAtualizados = [...favoritosAtualizados, livro];
+          await addFavorito(livro);
+        }
       }
 
-      setFavoritado(favoritosAtualizados.some((b) => b.id === livro.id));
+      setFavoritado(!favoritado);
       localStorage.setItem("favoritos", JSON.stringify(favoritosAtualizados));
     } catch (error) {
       console.error("Erro ao atualizar favorito:", error);
