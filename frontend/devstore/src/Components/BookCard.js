@@ -112,20 +112,14 @@ function BookCard({ livro, onRemoveBook, onAddBook }) {
     if (!livro || !livro.id) return;
 
     try {
-      let favoritosAtualizados = await getFavoritos() || [];
-
       if (favoritado) {
-        // Remove o livro da lista de favoritos
-        favoritosAtualizados = favoritosAtualizados.filter((b) => b.id !== livro.id);
         await removeFavorito(livro.id);
       } else {
-        if (!favoritosAtualizados.some((b) => b.id === livro.id)) {
-          favoritosAtualizados = [...favoritosAtualizados, livro];
-          await addFavorito(livro);
-        }
+        await addFavorito(livro.id);
       }
 
-      setFavoritado(!favoritado);
+      const favoritosAtualizados = await getFavoritos();
+      setFavoritado(favoritosAtualizados.some((b) => b.id === livro.id));
       localStorage.setItem("favoritos", JSON.stringify(favoritosAtualizados));
     } catch (error) {
       console.error("Erro ao atualizar favorito:", error);

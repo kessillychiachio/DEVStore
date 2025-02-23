@@ -12,11 +12,19 @@ import Login from "./pages/Login";
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    return localStorage.getItem("theme") === "dark";
+    try {
+      return localStorage.getItem("theme") === "dark" || false;
+    } catch {
+      return false;
+    }
   });
 
   useEffect(() => {
-    localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+    try {
+      localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+    } catch (error) {
+      console.warn("⚠️ Erro ao acessar localStorage:", error);
+    }
   }, [isDarkMode]);
 
   const toggleTheme = () => {
@@ -30,10 +38,10 @@ function App() {
         <Navbar toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/MinhaEstante" element={<MinhaEstante />} />
-          <Route path="/Favoritos" element={<Favoritos />} />
-          <Route path="/Sacola" element={<Sacola />} />
-          <Route path="/Login" element={<Login />} />
+          <Route path="/minha-estante" element={<MinhaEstante />} />
+          <Route path="/favoritos" element={<Favoritos />} />
+          <Route path="/sacola" element={<Sacola />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </Router>
     </ThemeProvider>

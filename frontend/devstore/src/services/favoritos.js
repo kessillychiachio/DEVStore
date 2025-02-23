@@ -9,24 +9,28 @@ async function getFavoritos() {
     const response = await favoritosAPI.get("/");
     return response.data;
   } catch (error) {
-    console.error("Erro ao buscar favoritos:", error);
-    return [];
+    console.error("❌ Erro ao buscar favoritos:", error.response?.data || error.message);
+    throw new Error("Erro ao buscar favoritos.");
   }
 }
 
 async function addFavorito(id) {
   try {
-    await favoritosAPI.post(`/${id}`);
+    const response = await favoritosAPI.post(`/${id}`);
+    return response.data;
   } catch (error) {
-    console.error("Erro ao adicionar favorito:", error);
+    console.error("❌ Erro ao adicionar favorito:", error.response?.data || error.message);
+    throw new Error("Erro ao adicionar favorito.");
   }
 }
 
 async function removeFavorito(id) {
   try {
-    await favoritosAPI.delete(`/${id}`);
+    const response = await favoritosAPI.delete(`/${id}`);
+    return response.data;
   } catch (error) {
-    console.error("Erro ao remover favorito:", error);
+    console.error("❌ Erro ao remover favorito:", error.response?.data || error.message);
+    throw new Error("Erro ao remover favorito.");
   }
 }
 

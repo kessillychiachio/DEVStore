@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import BookCard from "../components/BookCard";
 import styled from "styled-components";
-import { getFavoritos } from "../services/favoritos";
+import { getFavoritos, removeFavorito } from "../services/favoritos";
 
 const FavContainer = styled.div`
   display: flex;
@@ -43,21 +43,26 @@ function Favoritos() {
   useEffect(() => {
     async function fetchFavoritos() {
       try {
-        const storedFavoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
-        console.log("Favoritos carregados do localStorage:", storedFavoritos);
-        setFavoritos(storedFavoritos);
+        const favoritosAPI = await getFavoritos();
+        setFavoritos(favoritosAPI);
+        localStorage.setItem("favoritos", JSON.stringify(favoritosAPI));
       } catch (error) {
-        console.error("Erro ao buscar favoritos:", error);
+        console.error("Erro ao buscar favoritos da API:", error);
       }
     }
 
     fetchFavoritos();
   }, []);
 
-  const handleRemoveFavorite = (idLivro) => {
-    const updatedFavoritos = favoritos.filter((livro) => livro.id !== idLivro);
-    setFavoritos(updatedFavoritos);
-    localStorage.setItem("favoritos", JSON.stringify(updatedFavoritos));
+  const handleRemoveFavorite = async (idLivro) => {
+    try {
+      await removeFavorito(idLivro);
+      const updatedFavoritos = favoritos.filter((livro) => livro.id !== idLivro);
+      setFavoritos(updatedFavoritos);
+      localStorage.setItem("favoritos", JSON.stringify(updatedFavoritos));
+    } catch (error) {
+      console.error("Erro ao remover favorito:", error);
+    }
   };
 
   return (
