@@ -1,17 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
-import { lightTheme, darkTheme } from "./Assets/theme";
+import { lightTheme, darkTheme } from "./assets/theme";
 import GlobalStyle from "./styles/GlobalStyle";
-import Navbar from "./Components/NavBar";
-import Home from "./Pages/Home";
-import MinhaEstante from "./Pages/MinhaEstante";
-import Favoritos from "./Pages/Favoritos";
-import Sacola from "./Pages/Sacola";
-import Login from "./Pages/Login";
+import Navbar from "./components/NavBar";
+import Home from "./pages/Home";
+import MinhaEstante from "./pages/MinhaEstante";
+import Favoritos from "./pages/Favoritos";
+import Sacola from "./pages/Sacola";
+import Login from "./pages/Login";
 
 function App() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return localStorage.getItem("theme") === "dark";
+  });
+
+  useEffect(() => {
+    localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+  }, [isDarkMode]);
 
   const toggleTheme = () => {
     setIsDarkMode((prevMode) => !prevMode);

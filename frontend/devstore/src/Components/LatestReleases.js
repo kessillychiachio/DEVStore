@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { livros } from "../Assets/books";
+import { livros } from "../assets/books";
 import BookCard from "./BookCard";
 
 const LatestReleasesContainer = styled.section`
