@@ -64,26 +64,37 @@ const FavWrapper = styled.div`
   cursor: pointer;
 `;
 
-function BookCard({ livro }) {
-  const [shelfBooks, setShelfBooks] = useState(
-    typeof window !== "undefined" ? JSON.parse(localStorage.getItem("minhaEstante")) || [] : []
-  );
-  const [favoritos, setFavoritos] = useState(
-    typeof window !== "undefined" ? JSON.parse(localStorage.getItem("favoritos")) || [] : []
-  );
+function BookCard({ livro, onRemoveFavorite }) {
+  const [shelfBooks, setShelfBooks] = useState(() => {
+    if (typeof window !== "undefined") {
+      return JSON.parse(localStorage.getItem("minhaEstante")) || [];
+    }
+    return [];
+  });
+
+  const [favoritos, setFavoritos] = useState(() => {
+    if (typeof window !== "undefined") {
+      return JSON.parse(localStorage.getItem("favoritos")) || [];
+    }
+    return [];
+  });
+
   const [favoritado, setFavoritado] = useState(false);
 
   useEffect(() => {
-    if (livro) {
+    if (livro && livro.nome) {
       setFavoritado(favoritos.some((b) => b.nome === livro.nome));
     }
   }, [favoritos, livro]);
 
   const handleFavoriteToggle = () => {
+    if (!livro || !livro.nome) return;
+
     let updatedFavoritos;
 
     if (favoritado) {
       updatedFavoritos = favoritos.filter((b) => b.nome !== livro.nome);
+      if (onRemoveFavorite) onRemoveFavorite(livro.nome);
     } else {
       updatedFavoritos = [...favoritos, livro];
     }
@@ -94,12 +105,12 @@ function BookCard({ livro }) {
   };
 
   const handleAddToShelf = () => {
-    if (!shelfBooks.some((b) => b.nome === livro.nome)) {
-      const updatedBooks = [...shelfBooks, livro];
-      setShelfBooks(updatedBooks);
-      localStorage.setItem("minhaEstante", JSON.stringify(updatedBooks));
-      alert("Livro adicionado à estante!");
-    }
+    if (!livro || !livro.nome || shelfBooks.some((b) => b.nome === livro.nome)) return;
+
+    const updatedBooks = [...shelfBooks, livro];
+    setShelfBooks(updatedBooks);
+    localStorage.setItem("minhaEstante", JSON.stringify(updatedBooks));
+    alert("Livro adicionado à estante!");
   };
 
   return (
@@ -109,12 +120,12 @@ function BookCard({ livro }) {
       </FavWrapper>
       <BookImage src={livro?.imagem} alt={livro?.nome || "Livro"} />
       <BookInfo>
-        <BookTitle>{livro?.nome}</BookTitle>
-        <BookDescription>{livro?.descricao}</BookDescription>
+        <BookTitle>{livro?.nome || "Título Indisponível"}</BookTitle>
+        <BookDescription>{livro?.descricao || "Descrição não disponível"}</BookDescription>
       </BookInfo>
       <ButtonWrapper>
-        <Button onClick={handleAddToShelf} disabled={shelfBooks.some((b) => b.nome === livro.nome)}>
-          {shelfBooks.some((b) => b.nome === livro.nome) ? "Já na Estante" : "Adicionar à Estante"}
+        <Button onClick={handleAddToShelf} disabled={shelfBooks.some((b) => b.nome === livro?.nome)}>
+          {shelfBooks.some((b) => b.nome === livro?.nome) ? "Já na Estante" : "Adicionar à Estante"}
         </Button>
       </ButtonWrapper>
     </Card>
