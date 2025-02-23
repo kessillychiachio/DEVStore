@@ -1,8 +1,9 @@
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Button from "./Button";
 import FavoritoSVG from "./FavoritoSVG";
-import { useState, useEffect, useMemo } from "react";
 import { getFavoritos, addFavorito, removeFavorito } from "../services/favoritos";
+import { getEstante, addLivroEstante, removeLivroEstante } from "../services/estante";
 
 const BookCardWrapper = styled.div`
   width: 160px;
@@ -82,47 +83,55 @@ const ButtonWrapper = styled.div`
 
 function BookCard({ livro, onRemoveBook, onAddBook }) {
   const [favoritado, setFavoritado] = useState(false);
-
-  const naEstante = useMemo(() => {
-    if (!livro) return false;
-    const storedBooks = JSON.parse(localStorage.getItem("minhaEstante")) || [];
-    return storedBooks.some((b) => b.id === livro.id);
-  }, [livro]);
+  const [naEstante, setNaEstante] = useState(false);
 
   useEffect(() => {
-    if (!livro) return;
-
-    const checkIfFavorito = async () => {
+    async function checkStatus() {
       try {
         const favoritos = await getFavoritos();
+        const estante = await getEstante();
+        
         setFavoritado(favoritos.some((b) => b.id === livro.id));
+        setNaEstante(estante.some((b) => b.id === livro.id));
       } catch (error) {
-        console.error("Erro ao buscar favoritos:", error);
+        console.error("Erro ao buscar status do livro:", error);
       }
-    };
-
-    checkIfFavorito();
+    }
+    checkStatus();
   }, [livro]);
 
-  if (!livro || !livro.id) {
-    return null;
-  }
+  if (!livro || !livro.id) return null;
 
   const handleFavoriteToggle = async () => {
-    if (!livro || !livro.id) return;
-
     try {
       if (favoritado) {
         await removeFavorito(livro.id);
       } else {
         await addFavorito(livro.id);
       }
-
-      const favoritosAtualizados = await getFavoritos();
-      setFavoritado(favoritosAtualizados.some((b) => b.id === livro.id));
-      localStorage.setItem("favoritos", JSON.stringify(favoritosAtualizados));
+      setFavoritado(!favoritado);
     } catch (error) {
       console.error("Erro ao atualizar favorito:", error);
+    }
+  };
+
+  const handleAddToEstante = async () => {
+    try {
+      await addLivroEstante(livro.id);
+      setNaEstante(true);
+      onAddBook && onAddBook(livro);
+    } catch (error) {
+      console.error("Erro ao adicionar à estante:", error);
+    }
+  };
+
+  const handleRemoveFromEstante = async () => {
+    try {
+      await removeLivroEstante(livro.id);
+      setNaEstante(false);
+      onRemoveBook && onRemoveBook(livro.id);
+    } catch (error) {
+      console.error("Erro ao remover da estante:", error);
     }
   };
 
@@ -139,11 +148,11 @@ function BookCard({ livro, onRemoveBook, onAddBook }) {
       </BookCover>
       <ButtonWrapper>
         {naEstante ? (
-          <Button onClick={() => onRemoveBook(livro.id)} color="red">
+          <Button onClick={handleRemoveFromEstante} color="red">
             Remover da Estante
           </Button>
         ) : (
-          <Button onClick={() => onAddBook(livro)}>
+          <Button onClick={handleAddToEstante}>
             Adicionar à Estante
           </Button>
         )}

@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { livros } from "../assets/books";
+import { useState, useEffect } from "react";
+import { getLivros } from "../services/livros";
 import BookCard from "./BookCard";
 
 const LatestReleasesContainer = styled.section`
@@ -30,20 +31,38 @@ const BooksContainer = styled.div`
   justify-content: center;
 `;
 
-function LatestReleases({ onBookSelect }) {
-  const latestBooks = livros.slice(-4); 
+function LatestReleases({ onBookSelect, onAddBook }) {
+  const [latestBooks, setLatestBooks] = useState([]);
+
+  useEffect(() => {
+    async function fetchLatestBooks() {
+      try {
+        const livrosDaAPI = await getLivros();
+        setLatestBooks(livrosDaAPI.slice(-4));
+      } catch (error) {
+        console.error("Erro ao buscar os últimos lançamentos:", error);
+      }
+    }
+
+    fetchLatestBooks();
+  }, []);
 
   return (
     <LatestReleasesContainer>
       <Title>Últimos Lançamentos</Title>
       <BooksContainer>
-        {latestBooks.map((livro) => (
-          <BookCard
-            key={livro.id}
-            livro={livro}
-            onClick={() => onBookSelect(livro)}
-          />
-        ))}
+        {latestBooks.length > 0 ? (
+          latestBooks.map((livro) => (
+            <BookCard
+              key={livro.id}
+              livro={livro}
+              onClick={() => onBookSelect(livro)}
+              onAddBook={onAddBook} 
+            />
+          ))
+        ) : (
+          <p>Nenhum lançamento encontrado.</p>
+        )}
       </BooksContainer>
     </LatestReleasesContainer>
   );
