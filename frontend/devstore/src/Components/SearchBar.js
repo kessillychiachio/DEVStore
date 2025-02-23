@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { getLivros } from "../servicos/livros";
+import { getLivros } from "../services/livros";
 
 const SearchContainer = styled.div`
   display: flex;

@@ -1,34 +1,37 @@
 [
-    {
-      "id": "4",
-      "nome": "Entendendo algoritmos"
-    },
-    {
-      "id": "5",
-      "nome": "Cangaceiro Javascript"
-    },
-    {
-      "id": "7",
-      "nome": "Guia básico de C#"
-    },
-    {
-      "id": "8",
-      "nome": "Guia básico de JavaScript"
-    },
-    {
-      "id": "9",
-      "nome": "Código Limpo"
-    },
-    {
-      "id": "10",
-      "nome": "JavaScript para iniciantes"
-    },
-    {
-      "id": "11",
-      "nome": "Conhecendo o python"
-    },
-    {
-      "id": "12",
-      "nome": "Imersão Alura"
-    }
-  ]
+  {
+    "id": "4",
+    "nome": "Entendendo algoritmos",
+    "imagem": "entendendoalgoritmos.jpg"
+  },
+  {
+    "id": "5",
+    "nome": "Cangaceiro Javascript",
+    "imagem": "cangaceirojavascript.jpg"
+  },
+  {
+    "id": "7",
+    "nome": "Guia básico de C#",
+    "imagem": "guiabasicodecsharp.jpg"
+  },
+  {
+    "id": "8",
+    "nome": "Guia básico de JavaScript",
+    "imagem": "guiabasicojavascript.jpg"
+  },
+  {
+    "id": "9",
+    "nome": "Código Limpo",
+    "imagem": "codigolimpo.jpg"
+  },
+  {
+    "id": "10",
+    "nome": "JavaScript para iniciantes",
+    "imagem": "javascriptparainiciantes.jpg"
+  },
+  {
+    "id": "11",
+    "nome": "Python na Prática",
+    "imagem": "pythonnapratica.jpg"
+  }
+]

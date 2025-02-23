@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Button from "./Button";
 import FavoritoSVG from "./FavoritoSVG";
 import { useState, useEffect } from "react";
+import { getFavoritos, addFavorito, removeFavorito } from "../services/favoritos";
 
 const Card = styled.div`
   display: flex;
@@ -72,36 +73,37 @@ function BookCard({ livro, onRemoveFavorite }) {
     return [];
   });
 
-  const [favoritos, setFavoritos] = useState(() => {
-    if (typeof window !== "undefined") {
-      return JSON.parse(localStorage.getItem("favoritos")) || [];
-    }
-    return [];
-  });
-
   const [favoritado, setFavoritado] = useState(false);
 
   useEffect(() => {
-    if (livro && livro.nome) {
-      setFavoritado(favoritos.some((b) => b.nome === livro.nome));
-    }
-  }, [favoritos, livro]);
-
-  const handleFavoriteToggle = () => {
-    if (!livro || !livro.nome) return;
-
-    let updatedFavoritos;
-
-    if (favoritado) {
-      updatedFavoritos = favoritos.filter((b) => b.nome !== livro.nome);
-      if (onRemoveFavorite) onRemoveFavorite(livro.nome);
-    } else {
-      updatedFavoritos = [...favoritos, livro];
+    async function checkIfFavorito() {
+      try {
+        const favoritos = await getFavoritos();
+        setFavoritado(favoritos.some((b) => b.id === livro.id));
+      } catch (error) {
+        console.error("Erro ao buscar favoritos:", error);
+      }
     }
 
-    setFavoritos(updatedFavoritos);
-    localStorage.setItem("favoritos", JSON.stringify(updatedFavoritos));
-    setFavoritado(!favoritado);
+    if (livro) {
+      checkIfFavorito();
+    }
+  }, [livro]);
+
+  const handleFavoriteToggle = async () => {
+    if (!livro || !livro.id) return;
+
+    try {
+      if (favoritado) {
+        await removeFavorito(livro.id);
+        if (onRemoveFavorite) onRemoveFavorite(livro.id);
+      } else {
+        await addFavorito(livro.id);
+      }
+      setFavoritado(!favoritado);
+    } catch (error) {
+      console.error("Erro ao atualizar favorito:", error);
+    }
   };
 
   const handleAddToShelf = () => {
