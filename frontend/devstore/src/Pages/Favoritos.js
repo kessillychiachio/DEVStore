@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import BookCard from "../Components/BookCard";
+import BookCard from "../components/BookCard";
 
 const FavContainer = styled.div`
   display: flex;

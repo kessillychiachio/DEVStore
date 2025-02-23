@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import FormularioEstante from "../Components/FormularioEstante";
-import BookCard from "../Components/BookCard";
+import FormularioEstante from "../components/FormularioEstante";
+import BookCard from "../components/BookCard";
 
 const EstanteContainer = styled.div`
   display: flex;

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "./Logo";
 import ThemeToggle from "./ThemeToggle";
-import Icon from "../Assets/Icons";
+import Icon from "../assets/Icons";
 
 const Nav = styled.nav`
   display: flex;

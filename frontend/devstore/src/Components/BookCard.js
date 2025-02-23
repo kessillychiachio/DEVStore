@@ -55,7 +55,6 @@ const ButtonWrapper = styled.div`
   display: flex;
   justify-content: space-around;
   margin-top: auto;
-  background: none;
 `;
 
 const FavWrapper = styled.div`
@@ -67,15 +66,18 @@ const FavWrapper = styled.div`
 
 function BookCard({ livro }) {
   const [shelfBooks, setShelfBooks] = useState(
-    JSON.parse(localStorage.getItem("minhaEstante")) || []
+    typeof window !== "undefined" ? JSON.parse(localStorage.getItem("minhaEstante")) || [] : []
   );
   const [favoritos, setFavoritos] = useState(
-    JSON.parse(localStorage.getItem("favoritos")) || []
+    typeof window !== "undefined" ? JSON.parse(localStorage.getItem("favoritos")) || [] : []
   );
-  const [favoritado, setFavoritado] = useState(false); 
+  const [favoritado, setFavoritado] = useState(false);
+
   useEffect(() => {
-    setFavoritado(favoritos.some((b) => b.nome === livro.nome));
-  }, [favoritos, livro.nome]);
+    if (livro) {
+      setFavoritado(favoritos.some((b) => b.nome === livro.nome));
+    }
+  }, [favoritos, livro]);
 
   const handleFavoriteToggle = () => {
     let updatedFavoritos;
@@ -88,7 +90,7 @@ function BookCard({ livro }) {
 
     setFavoritos(updatedFavoritos);
     localStorage.setItem("favoritos", JSON.stringify(updatedFavoritos));
-    setFavoritado(!favoritado); 
+    setFavoritado(!favoritado);
   };
 
   const handleAddToShelf = () => {
@@ -103,12 +105,12 @@ function BookCard({ livro }) {
   return (
     <Card>
       <FavWrapper onClick={handleFavoriteToggle}>
-        <FavoritoSVG ativo={favoritado} /> {/* 🔹 Agora recebe `favoritado` corretamente */}
+        <FavoritoSVG ativo={favoritado} />
       </FavWrapper>
-      <BookImage src={livro.imagem} alt={livro.nome} />
+      <BookImage src={livro?.imagem} alt={livro?.nome || "Livro"} />
       <BookInfo>
-        <BookTitle>{livro.nome}</BookTitle>
-        <BookDescription>{livro.descricao}</BookDescription>
+        <BookTitle>{livro?.nome}</BookTitle>
+        <BookDescription>{livro?.descricao}</BookDescription>
       </BookInfo>
       <ButtonWrapper>
         <Button onClick={handleAddToShelf} disabled={shelfBooks.some((b) => b.nome === livro.nome)}>
