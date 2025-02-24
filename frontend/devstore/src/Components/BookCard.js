@@ -132,7 +132,14 @@ function BookCard({ livro, onAddBook }) {
 
   return (
     <BookCardWrapper>
-      <BookCover style={{ backgroundImage: `url(${livro?.imagem})` }}>
+      <BookCover
+  style={{
+    backgroundImage: livro?.imagem
+      ? `url(http://localhost:8000/uploads/${livro.imagem})`
+      : `url(https://via.placeholder.com/150x220?text=Sem+Imagem)`,
+  }}
+/>
+
         <FavWrapper onClick={handleFavoriteToggle}>
           <FavoritoSVG ativo={favoritado} />
         </FavWrapper>
@@ -140,7 +147,6 @@ function BookCard({ livro, onAddBook }) {
           <BookTitle>{livro?.nome || "Título Indisponível"}</BookTitle>
           <BookDescription>{livro?.descricao || "Descrição não disponível"}</BookDescription>
         </Overlay>
-      </BookCover>
       <ButtonWrapper>
         <Button onClick={handleEstanteToggle}>
           {naEstante ? (

@@ -1,8 +1,11 @@
 const express = require("express");
-const app = require("./app");
+const app = express();
+const cors = require("cors");
+const path = require("path");
 
-const PORT = process.env.PORT || 8000;
+app.use(cors());
+app.use(express.json());
 
-app.listen(PORT, () => {
-  console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
-});
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+app.listen(8000, () => console.log("🚀 Servidor rodando em http://localhost:8000"));
