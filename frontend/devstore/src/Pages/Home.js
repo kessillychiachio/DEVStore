@@ -3,9 +3,10 @@ import SearchBar from "../components/SearchBar";
 import LatestReleases from "../components/LatestReleases";
 import RecommendationCard from "../components/RecommendationCard";
 import { getLivros } from "../services/livros";
+import { addLivroEstante } from "../services/estante";
 
 function Home() {
-  const [setSelectedBook] = useState(null);
+  const [selectedBook, setSelectedBook] = useState(null);
   const [recommendedBook, setRecommendedBook] = useState(null);
 
   useEffect(() => {
@@ -18,11 +19,7 @@ function Home() {
           return;
         }
 
-        let randomBook;
-        do {
-          randomBook = livros[Math.floor(Math.random() * livros.length)];
-        } while (randomBook === recommendedBook);
-
+        const randomBook = livros[Math.floor(Math.random() * livros.length)];
         setRecommendedBook(randomBook);
       } catch (error) {
         console.error("Erro ao buscar livros:", error);
@@ -32,20 +29,53 @@ function Home() {
     fetchRecommendedBook();
   }, []);
 
-  function handleAddBook(livro) {
-    const minhaEstante = JSON.parse(localStorage.getItem("minhaEstante")) || [];
-
-    if (!minhaEstante.some((b) => b.id === livro.id)) {
-      const novaEstante = [...minhaEstante, livro];
-      localStorage.setItem("minhaEstante", JSON.stringify(novaEstante));
-      console.log(`📚 Livro "${livro.nome}" adicionado à estante.`);
+  async function handleAddBook(livro) {
+    if (!livro || !livro.id || !livro.nome || !livro.autor) {
+      console.error("❌ Erro: Livro inválido!", livro);
+      return;
     }
-  }
+  
+    try {
+      const livroCompleto = {
+        id: livro.id,
+        nome: livro.nome,
+        autor: livro.autor || "Autor desconhecido",
+        descricao: livro.descricao || "Sem descrição disponível",
+        imagem: livro.imagem || null
+      };
+  
+      const livroAdicionado = await addLivroEstante(livroCompleto);
+    
+      if (livroAdicionado) {
+        console.log(`📚 Livro "${livroCompleto.nome}" adicionado à estante no backend.`);
+      } else {
+        console.error("Erro ao adicionar o livro no backend.");
+      }
+    } catch (error) {
+      console.error("Erro ao enviar livro para a estante:", error);
+    }
+  }  
 
   return (
     <div>
-      <SearchBar onBookSelect={setSelectedBook} />
-      <LatestReleases onBookSelect={setSelectedBook} onAddBook={handleAddBook} />
+      <SearchBar onBookSelect={(livro) => {
+        console.log("✅ Livro selecionado na SearchBar:", livro);
+        setSelectedBook(livro);
+      }} />
+
+      <LatestReleases onBookSelect={(livro) => {
+        console.log("✅ Livro selecionado em LatestReleases:", livro);
+        setSelectedBook(livro);
+      }} onAddBook={handleAddBook} />
+
+      {selectedBook && (
+        <div>
+          <h2>Livro Selecionado:</h2>
+          <p>{selectedBook.nome}</p>
+          <p>Autor: {selectedBook.autor}</p>
+        </div>
+      )}
+
       {recommendedBook ? (
         <RecommendationCard book={recommendedBook} />
       ) : (

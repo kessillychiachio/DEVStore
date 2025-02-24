@@ -34,7 +34,10 @@ const BooksGrid = styled.div`
   width: 100%;
   max-width: 1200px;
   min-width: 300px;
+  min-height: 300px; 
+  padding-bottom: 20px;
 `;
+
 
 const FormContainer = styled.form`
   display: flex;
@@ -78,11 +81,12 @@ function MinhaEstante() {
     imagem: null,
   });
 
+  // 🚀 Corrigindo a busca da estante para garantir que os livros sejam carregados corretamente
   useEffect(() => {
     async function fetchEstante() {
       try {
         const livros = await getEstante();
-        setEstante(livros);
+        setEstante(livros || []); // Garante que sempre tenha um array
       } catch (error) {
         console.error("Erro ao buscar estante:", error);
       }
@@ -90,31 +94,42 @@ function MinhaEstante() {
     fetchEstante();
   }, []);
 
+  // 🚀 Corrigindo a remoção de livros da estante
   const handleRemoveBook = async (idLivro) => {
-    await removeLivroEstante(idLivro);
-    setEstante((prev) => prev.filter((livro) => livro.id !== idLivro));
+    try {
+      await removeLivroEstante(idLivro);
+      setEstante((prev) => prev.filter((livro) => livro.id !== idLivro));
+    } catch (error) {
+      console.error("Erro ao remover livro da estante:", error);
+    }
   };
 
+  // 🚀 Corrigindo a adição de livros para garantir que ele seja salvo no backend e atualizado na UI
   const handleAddBook = async (event) => {
     event.preventDefault();
-
+  
     if (!formData.nome || !formData.autor || !formData.descricao) {
       alert("Preencha todos os campos obrigatórios!");
       return;
     }
 
-    const formDataToSend = new FormData();
-    formDataToSend.append("nome", formData.nome);
-    formDataToSend.append("autor", formData.autor);
-    formDataToSend.append("descricao", formData.descricao);
-    if (formData.imagem) {
-      formDataToSend.append("imagem", formData.imagem);
-    }
+    const novoLivro = {
+      nome: formData.nome,
+      autor: formData.autor,
+      descricao: formData.descricao,
+      imagem: formData.imagem ? URL.createObjectURL(formData.imagem) : null,
+    };
 
     try {
-      const novoLivro = await addLivroEstante(formDataToSend);
-      if (!novoLivro || !novoLivro.id) throw new Error("Erro ao adicionar livro.");
-      setEstante((prev) => [...prev, novoLivro]);
+      const livroAdicionado = await addLivroEstante(novoLivro);
+      if (!livroAdicionado || !livroAdicionado.id) {
+        throw new Error("Erro ao adicionar livro.");
+      }
+
+      // Atualiza o estado da estante corretamente
+      setEstante((prev) => [...prev, livroAdicionado]);
+
+      // Reseta o formulário
       setFormData({ nome: "", autor: "", descricao: "", imagem: null });
     } catch (error) {
       console.error("Erro ao adicionar livro:", error);

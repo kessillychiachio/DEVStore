@@ -21,8 +21,14 @@ function adicionarLivroEstante(livro) {
 
 function removerLivroEstante(id) {
     const estante = getEstante();
+    
+    if (!estante.some((livro) => livro.id === id)) {
+        throw new Error(`Livro com ID ${id} não está na estante.`);
+    }
+
     const novaEstante = estante.filter((livro) => livro.id !== id);
     fs.writeFileSync(caminhoEstante, JSON.stringify(novaEstante, null, 2));
 }
+
 
 module.exports = { getEstante, adicionarLivroEstante, removerLivroEstante };

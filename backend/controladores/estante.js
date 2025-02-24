@@ -1,6 +1,5 @@
 const fs = require("fs");
 const caminhoEstante = "estante.json";
-const caminhoLivros = "livros.json";
 
 function getEstante(req, res) {
     try {
@@ -17,14 +16,14 @@ function getEstante(req, res) {
 
 function addLivroEstante(req, res) {
     try {
-        const id = Number(req.params.id);
-        const livros = JSON.parse(fs.readFileSync(caminhoLivros, "utf-8"));
+        const livro = req.body;
+        if (!livro.id || !livro.nome || !livro.autor) {
+            return res.status(400).json({ mensagem: "Dados inválidos. O livro precisa de um id, nome e autor." });
+        }
+
         const estante = JSON.parse(fs.readFileSync(caminhoEstante, "utf-8"));
 
-        const livro = livros.find(l => l.id === id);
-        if (!livro) return res.status(404).json({ mensagem: "Livro não encontrado" });
-
-        if (estante.some(l => l.id === id)) {
+        if (estante.some((l) => l.id === livro.id)) {
             return res.status(400).json({ mensagem: "Livro já está na estante" });
         }
 

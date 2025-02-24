@@ -1,1 +1,20 @@
-[]
+[
+  {
+    "id": 10,
+    "nome": "JavaScript para iniciantes",
+    "autor": "Desconhecido",
+    "descricao": "Uma abordagem passo a passo para ensinar os fundamentos do JavaScript, ideal para quem está começando na programação."
+  },
+  {
+    "id": 11,
+    "nome": "Python na Prática",
+    "autor": "Desconhecido",
+    "descricao": "Aprenda Python com exemplos práticos e projetos reais, desde os conceitos básicos até aplicações mais avançadas."
+  },
+  {
+    "id": 12,
+    "nome": "Novo Livro",
+    "autor": "Autor Teste",
+    "descricao": "Descrição Teste"
+  }
+]

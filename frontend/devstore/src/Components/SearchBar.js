@@ -29,20 +29,32 @@ const Subtitle = styled.p`
   margin: 5px 0 15px 0;
 `;
 
+const SearchInputWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  &:before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #ff416c, #1e90ff);
+    border-radius: inherit;
+    z-index: -1;
+  }
+`;
+
 const SearchInput = styled.input`
   width: 100%;
   padding: 12px;
   border: 2px solid ${(props) => props.theme.border};
-  border-radius: 20px;
   outline: none;
   font-size: 16px;
   background: ${(props) => props.theme.background};
   color: ${(props) => props.theme.text};
   transition: border 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 
-  &::placeholder {
-    color: ${(props) => props.theme.textSecondary};
-  }
 
   &:focus {
     border-color: ${(props) => props.theme.secondary};
@@ -51,42 +63,53 @@ const SearchInput = styled.input`
 `;
 
 const ResultsContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  justify-content: center;
-  margin-top: 15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 50px;
+  margin: 40px auto;
+  width: 100%;
+  max-width: 800px; 
+  padding: 10px;
+  background: ${(props) => props.theme.background};
+  backdrop-filter: blur(10px);
+  text-align: center;
+  transition: background 0.3s ease-in-out, border 0.3s ease-in-out;
+  place-items: center; 
+  border-bottom: 90px;
 `;
+
 
 function SearchBar({ onBookSelect }) {
   const [livros, setLivros] = useState([]);
   const [query, setQuery] = useState("");
   const [filteredBooks, setFilteredBooks] = useState([]);
 
-  useEffect(() => {
-    const fetchLivros = async () => {
-      try {
-        const data = await getLivros();
-        if (Array.isArray(data)) {
-          setLivros(data.map(livro => ({
-            ...livro,
-            imagem: livro.imagem || "https://via.placeholder.com/150x220?text=Sem+Imagem",
-          })));
-        } else {
-          console.error("Dados inválidos recebidos do backend:", data);
-        }
-      } catch (error) {
-        console.error("Erro ao buscar livros:", error);
+ useEffect(() => {
+  const fetchLivros = async () => {
+    try {
+      const data = await getLivros();
+      if (Array.isArray(data)) {
+        setLivros(data.map(livro => ({
+          ...livro,
+          imagem: livro.imagem && livro.imagem.trim() !== "" 
+            ? livro.imagem 
+            : "https://via.placeholder.com/150x220?text=Sem+Imagem"
+        })));
+      } else {
+        console.error("Dados inválidos recebidos do backend:", data);
       }
-    };
+    } catch (error) {
+      console.error("Erro ao buscar livros:", error);
+    }
+  };
 
-    fetchLivros();
-  }, []);
+  fetchLivros();
+}, []);
+
 
   const handleSearch = (e) => {
     const searchTerm = e.target.value.toLowerCase();
     setQuery(searchTerm);
-
     if (searchTerm.length === 0) {
       setFilteredBooks([]);
     } else {
@@ -101,12 +124,14 @@ function SearchBar({ onBookSelect }) {
     <SearchContainer>
       <Title>Já sabe por onde começar?</Title>
       <Subtitle>Encontre seu produto</Subtitle>
-      <SearchInput
-        type="text"
-        placeholder="Pesquisar livros..."
-        value={query}
-        onChange={handleSearch}
-      />
+      <SearchInputWrapper>
+        <SearchInput
+          type="text"
+          placeholder="Pesquisar livros..."
+          value={query}
+          onChange={handleSearch}
+        />
+      </SearchInputWrapper>
       {query.length > 0 && filteredBooks.length > 0 && (
         <ResultsContainer>
           {filteredBooks.map((livro) => (

@@ -17,6 +17,7 @@ const Button = styled.button`
   border: none;
   overflow: hidden;
   z-index: 1;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
 
   &:hover {
     transform: scale(1.05);

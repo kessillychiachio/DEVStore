@@ -80,9 +80,11 @@ const ButtonWrapper = styled.div`
   justify-content: center;
 `;
 
-function BookCard({ livro }) {
+function BookCard({ livro, onAddBook }) { 
+  
   const [favoritado, setFavoritado] = useState(false);
   const [naEstante, setNaEstante] = useState(false);
+  
 
   useEffect(() => {
     async function fetchStatus() {
@@ -118,6 +120,9 @@ function BookCard({ livro }) {
         await removeLivroEstante(livro.id);
       } else {
         await addLivroEstante(livro);
+        if (onAddBook) {
+          onAddBook(livro); 
+        }
       }
       setNaEstante(!naEstante);
     } catch (error) {
@@ -153,14 +158,12 @@ function BookCard({ livro }) {
   );
 }
 
-/* Ícone de "+" */
 const PlusIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
     <path d="M12 5v14m-7-7h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
   </svg>
 );
 
-/* Ícone de "-" */
 const MinusIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
     <path d="M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
