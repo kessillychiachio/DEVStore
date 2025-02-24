@@ -47,19 +47,5 @@
     "autor": "Desconhecido",
     "descricao": "Aprenda Python com exemplos práticos e projetos reais, desde os conceitos básicos até aplicações mais avançadas.",
     "imagem": "pythonnapratica.jpg"
-  },
-  {
-    "id": 12,
-    "nome": "Novo Livro",
-    "autor": "Autor Teste",
-    "descricao": "Descrição Teste",
-    "imagem": "default.jpg"
-  },
-  {
-    "id": 13,
-    "nome": "Novo Livro Teste",
-    "autor": "Autor Teste",
-    "descricao": "Descrição de Teste",
-    "imagem": "default.jpg"
   }
 ]

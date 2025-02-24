@@ -12,5 +12,19 @@
     "autor": "Desconhecido",
     "descricao": "Aprenda Python com exemplos práticos e projetos reais, desde os conceitos básicos até aplicações mais avançadas.",
     "imagem": "pythonnapratica.jpg"
+  },
+  {
+    "id": 8,
+    "nome": "Guia básico de JavaScript",
+    "autor": "Desconhecido",
+    "descricao": "Um guia introdutório para quem deseja aprender JavaScript, cobrindo fundamentos e boas práticas para desenvolvimento web.",
+    "imagem": "guiabasicojavascript.jpg"
+  },
+  {
+    "id": 9,
+    "nome": "Código Limpo",
+    "autor": "Robert C. Martin",
+    "descricao": "Livro essencial para desenvolvedores que querem escrever códigos mais organizados, eficientes e fáceis de manter.",
+    "imagem": "codigolimpo.jpg"
   }
 ]
